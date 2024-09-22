@@ -1,12 +1,18 @@
 .serverSidebar {
-  width: 200px;
+  width: 300px;
   background-color: #292a28;
   color: white;
   display: flex;
   flex-direction: column;
-  padding: 20px;
+  justify-content: space-between;
+
 
   .serverName {
+    padding-left: 20px;
     font-weight: 700;
+    height: 80%;
   }
 }
+
+
+
