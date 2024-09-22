@@ -1,0 +1,25 @@
+.sidebar {
+  width: 80px;
+  background-color: #2e2f2d;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 20px;
+}
+
+.icon {
+  font-size: 0.8rem;
+  color: white;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  width: 50px;
+  height: 50px;
+  background-color: #626361;
+  margin-bottom: 10px;
+  border-radius: 50%;
+}
