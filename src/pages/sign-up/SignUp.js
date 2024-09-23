@@ -13,9 +13,14 @@ const SignUp = () => {
         <div>
             <div className={styles.container}>
                 <h1 className={styles.title}>로그인</h1>
-                <SignUpInput type={'text'} content={'이메일을 입력해 주세요.'}/>
-                <SignUpInput type={'password'} content={'비밀번호를 입력해 주세요.'}/>
+                <SignUpInput type={'text'} content={'이메일'}/>
+                <SignUpInput type={'password'} content={'비밀번호'}/>
+                <div className={styles.checkBox}>
+                    <input type={"checkbox"}/>
+                    자동로그인
+                </div>
                 <SignUpBtn content={'로그인'}/>
+                <div className={styles.findPW}>비밀번호 찾기</div>
             </div>
         </div>
     );

@@ -16,10 +16,24 @@ body {
     align-items: center;
     border-radius: 22px;
     padding: 30px;
+    gap: 30px;
 
     .title {
       color: white;
       margin: 0;
+    }
+
+    .checkBox {
+
+      input {
+        margin-right: 10px;
+        border-radius: 50px;
+      }
+      width: 380px;
+    }
+
+    .findPW {
+      color: #FFFFFF;
     }
   }
 }
