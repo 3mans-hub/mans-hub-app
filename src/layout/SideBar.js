@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styles from './styles/SideBar.module.scss';
 import { PiPlus } from "react-icons/pi";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,16 +10,25 @@ const Sidebar = () => {
     const groups = useSelector(state => state.group.groupList);
     const joinStatus = useSelector(state => state.group.joinGroupStatus);
 
-    // 클릭 이벤트 핸들러
+
+    // 그룹 클릭 시 현재 접속 그룹 및 접속 상태를 Redux에 저장
     const groupClickHandler = (index) => {
-        dispatch(groupActions.joinGroup(true));  // 그룹 접속 상태로 변경
+        dispatch(groupActions.joinGroup({
+            status: true,
+            group: groups[index]  // 접속한 그룹 이름을 상태에 저장
+        }));
         setActive(index);
     };
 
+    // 로고 클릭 시 그룹 접속 해제
     const logoClickHandler = () => {
-        dispatch(groupActions.joinGroup(false));  // 그룹 접속 해제 (로고 활성화)
+        dispatch(groupActions.joinGroup({
+            status: false,
+            group: null  // 접속한 그룹 해제
+        }));
         setActive(null);
     };
+
 
     // 새 그룹 추가 핸들러
     const addGroupHandler = () => {
@@ -50,6 +59,7 @@ const Sidebar = () => {
             <div className={styles.addGroup}>
                 <PiPlus onClick={addGroupHandler} />
             </div>
+
         </div>
     );
 };

@@ -2,6 +2,7 @@ import React from 'react';
 import styles from './styles/ServerSideBar.module.scss';
 import UserStatus from '../components/UserStatus'
 import {useDispatch, useSelector} from "react-redux";
+import ServerStatus from "../components/ServerStatus";
 
 const ServerSidebar = () => {
 
@@ -11,13 +12,8 @@ const ServerSidebar = () => {
 
     return (
         <div className={styles.serverSidebar}>
-
-            {/*<p className={styles.serverName}>서버 이름</p>*/}
-            {/*/!**/}
-            {/*    여기에 서버 관련 내용은 다른 디렉터리에서*/}
-            {/*    컴포넌트화 하고 넣으면 좋을 것 같습니다 - 기범*/}
-            {/* *!/*/}
-            {/*<UserStatus />*/}
+            <ServerStatus/>
+            <UserStatus />
         </div>
     );
 };
