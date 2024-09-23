@@ -3,6 +3,7 @@ import styles from './styles/ServerSideBar.module.scss';
 import UserStatus from '../components/UserStatus'
 import {useDispatch, useSelector} from "react-redux";
 import ServerStatus from "../components/ServerStatus";
+import SideBarMain from "../components/SideBarMain";
 
 const ServerSidebar = () => {
 
@@ -12,8 +13,14 @@ const ServerSidebar = () => {
 
     return (
         <div className={styles.serverSidebar}>
-            <ServerStatus/>
-            <UserStatus />
+            {joinStatus ?
+                <>
+                    <ServerStatus/>
+                    <UserStatus/>
+                </>
+                :
+                <SideBarMain/>
+            }
         </div>
     );
 };
