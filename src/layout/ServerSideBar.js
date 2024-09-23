@@ -6,8 +6,7 @@ const ServerSidebar = () => {
     return (
         <div className={styles.serverSidebar}>
             <p className={styles.serverName}>서버 이름</p>
-                <UserStatus />
-
+            <UserStatus />
         </div>
     );
 };

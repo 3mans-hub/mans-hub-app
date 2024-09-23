@@ -4,14 +4,15 @@
   color: white;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
 
+  height: 100vh;
 
   .serverName {
     padding-left: 20px;
     font-weight: 700;
-    height: 80%;
+    height: 80vh;
   }
+
 }
 
 
