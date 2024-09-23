@@ -25,7 +25,7 @@ const UserStatus = () => {
             <div className={styles.userInfo}>
                 <div className={styles.avatar}></div>
                 <div className={styles.userDetails}>
-                    <p className={styles.userName}>박진우</p>
+                    <p className={styles.userName}>유저1</p>
                     <p className={styles.userStatusText}>온라인</p>
                 </div>
                 <div className={styles.controls}>
