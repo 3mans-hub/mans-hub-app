@@ -5,8 +5,8 @@ import { PiPlus } from "react-icons/pi";
 const Sidebar = () => {
     // 클릭된 그룹의 인덱스를 저장하는 state
     const [active, setActive] = useState(null);
+    const [groups, setGroups] = useState(['그룹1', '그룹2']);
 
-    const groups = ['그룹1', '그룹2'];
 
     // 클릭 이벤트 핸들러 (클릭된 그룹의 인덱스를 저장)
     const groupClickHandler = (index) => {
@@ -15,6 +15,10 @@ const Sidebar = () => {
 
     const logoClickHandler = () => {
         setActive(null);
+    }
+
+    const addGroupHandler = () => {
+        setGroups([...groups, `그룹${groups.length + 1}`]);
     }
 
     return (
@@ -35,7 +39,7 @@ const Sidebar = () => {
             ))}
 
             <div className={styles.addGroup}>
-                <PiPlus />
+                <PiPlus onClick={addGroupHandler}/>
             </div>
         </div>
     );
