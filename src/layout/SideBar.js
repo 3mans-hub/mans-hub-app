@@ -9,20 +9,26 @@ const Sidebar = () => {
     const groups = ['그룹1', '그룹2'];
 
     // 클릭 이벤트 핸들러 (클릭된 그룹의 인덱스를 저장)
-    const handleGroupClick = (index) => {
+    const groupClickHandler = (index) => {
         setActive(index);
     };
 
+    const logoClickHandler = () => {
+        setActive(null);
+    }
+
     return (
         <div className={styles.sidebar}>
-            <div className={`${styles.mainIcon} ${active === null ? styles.active : ''}`}>로고</div>
+            <div className={`${styles.mainIcon} ${active === null ? styles.active : ''}`}
+            onClick={logoClickHandler}>
+            로고</div>
             <div className={styles.line}></div>
 
             {groups.map((group, index) => (
                 <div
                     key={index}
                     className={`${styles.icon} ${active === index ? styles.active : ''}`}
-                    onClick={() => handleGroupClick(index)}
+                    onClick={() => groupClickHandler(index)}
                 >
                     {group}
                 </div>
