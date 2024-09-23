@@ -15,5 +15,28 @@
 
 }
 
+// 좀 배끼겟습니다 기범님 ^^
+.serverRightSidebar{
+  width: 300px;
+  background-color: #292a28;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  height: auto; /* 높이 자동 조절 */
+  padding: 20px 0; /* 위 아래 패딩 조절 */
+
+  .serverRightName {
+    color: gray;
+    cursor: pointer;
+    &:hover {
+      color: darkgray;
+    }
+  }
+
+  .active {
+    color: white;
+  }
+
+}
 
 
