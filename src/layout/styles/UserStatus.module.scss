@@ -1,0 +1,88 @@
+.userStatus {
+  background-color: #202225;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 35%;
+  overflow: hidden;
+}
+
+.voiceStatus {
+  background-color: #292b2f;
+  padding: 10px;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+
+  .connectionStatus {
+    color: #43b581;
+    font-weight: bold;
+    margin: 0;
+  }
+
+  .projectInfo {
+    font-size: 0.8rem;
+    color: #b9bbbe;
+    margin: 0;
+  }
+
+  .voiceControls {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 10px;
+
+    .iconControl {
+      background-color: #2f3136;
+      padding: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  }
+}
+
+.userInfo {
+  background-color: #292b2f;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .avatar {
+    width: 40px;
+    height: 40px;
+    background-color: #b9bbbe;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+
+  .userDetails {
+    display: flex;
+    flex-direction: column;
+
+    .userName {
+      font-weight: bold;
+    }
+
+    .userStatusText {
+      font-size: 0.8rem;
+      color: #b9bbbe;
+    }
+  }
+
+  .controls {
+    display: flex;
+
+    .icon {
+      font-size: 1.5rem;
+      cursor: pointer;
+      background-color: #2f3136;
+      padding: 5px;
+      border-radius: 5px;
+
+      &:hover {
+        background-color: #3a3c41;
+      }
+    }
+  }
+}

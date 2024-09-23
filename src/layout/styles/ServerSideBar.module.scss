@@ -1,0 +1,19 @@
+.serverSidebar {
+  width: 300px;
+  background-color: #292a28;
+  color: white;
+  display: flex;
+  flex-direction: column;
+
+  height: 100vh;
+
+  .serverName {
+    padding-left: 20px;
+    font-weight: 700;
+    height: 80vh;
+  }
+
+}
+
+
+
