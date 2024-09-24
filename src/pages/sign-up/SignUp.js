@@ -6,37 +6,56 @@ import styles from './SignUp.module.scss';
 const SignUp = () => {
 
     const [email, setEmail] = useState("");
-
+    const [emailVerification, setEmailVerification] = useState(false)
+    const [verificationCode, setVerificationCode] = useState("");
+    const [nickName, setNickName] = useState("");
     const [password, setPassword] = useState("");
+    const [passwordConfirm, setPasswordConfirm] = useState("");
+    const [step, setStep] = useState(1);
 
-    const [inputState, setInputState] = useState(false);
+    const validateEmail = (email) => {
+        // 이메일 형식을 확인하는 정규식
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    };
 
-    // 아직 조건 생성 X, 일단 이메일하고 비밀번호를 1글자 이상 입력할경우만 버튼 활성화
     useEffect(() => {
 
-        if(email.length > 0 && password.length > 0) {
-            setInputState(true);
-        } else {
-            setInputState(false);
-        }
+       if(validateEmail(email)) {
+           setEmailVerification(true)
+       }
+    }, [email]);
 
-    }, [email, password]);
+    const nextStep = () => {
+        setStep(step + 1);
+    }
+
+    const userInput = () => {
+        if (step === 3) {
+            return nickName;
+        } else if (step === 4) {
+            return password;
+        }
+    }
 
     return (
         <div>
             <div className={styles.container}>
-                <h1 className={styles.title}>로그인</h1>
-                <SignUpInput type={'text'} content={'이메일'} setValue={setEmail}/>
-                <SignUpInput type={'password'} content={'비밀번호'} setValue={setPassword}/>
-                <div className={styles.checkBox}>
-                    <input type={"checkbox"}/>
-                    자동로그인
-                </div>
-                <SignUpBtn content={'로그인'} type={inputState}/>
-                <div className={styles.findPW}>비밀번호 찾기</div>
+                <h1 className={styles.title}>회원가입</h1>
+                <SignUpInput type={'text'} content={'이메일'} setValue={setEmail} disable={step > 1}/>
+                {step > 1 && <SignUpInput type={'text'} content={'이메일 인증번호'} setValue={setVerificationCode} disable={step > 2}/>}
+                {step > 2 && <SignUpInput type={'text'} content={'닉네임'} setValue={setNickName} />}
+                {step > 3 && <SignUpInput type={'password'} content={'비밀번호'} setValue={setPassword}/>}
+                {step > 4 && <SignUpInput type={'password'} content={'비밀번호'} setValue={setPasswordConfirm}/>}
+
+                {step === 1 && <SignUpBtn content={'인증번호 요청'} type={emailVerification} eventHandler={nextStep}/>}
+                {step === 2 && <SignUpBtn content={'인증번호 확인'} type={verificationCode !== ""} eventHandler={nextStep} />}
+                {( 2 < step && step < 5 ) && <SignUpBtn content={'다음'} type={userInput() !== ""} eventHandler={nextStep}/>}
+                {step === 5 && <SignUpBtn content={'회원가입'} type={true}/>}
             </div>
         </div>
     );
+
 };
 
 export default SignUp;

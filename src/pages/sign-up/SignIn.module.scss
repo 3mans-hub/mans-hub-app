@@ -1,0 +1,40 @@
+
+body {
+  background: #383A38;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .container {
+    box-sizing: border-box;
+    background: #2E2F2D;
+    width: 800px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 22px;
+    padding: 30px;
+    gap: 30px;
+
+    .title {
+      color: white;
+      margin: 0;
+    }
+
+    .checkBox {
+
+      input {
+        margin-right: 10px;
+        border-radius: 50px;
+      }
+      width: 380px;
+    }
+
+    .findPW {
+      color: #FFFFFF;
+    }
+  }
+}
+
