@@ -51,7 +51,7 @@ const SignUp = () => {
                 {step === 1 && <SignUpBtn content={'인증번호 요청'} type={emailVerification} eventHandler={nextStep}/>}
                 {step === 2 && <SignUpBtn content={'인증번호 확인'} type={verificationCode !== ""} eventHandler={nextStep} />}
                 {( 2 < step && step < 5 ) && <SignUpBtn content={'다음'} type={userInput() !== ""} eventHandler={nextStep}/>}
-                {step === 5 && <SignUpBtn content={'회원가입'} type={true}/>}
+                {step === 5 && <SignUpBtn content={'회원가입'} type={passwordConfirm !== ""}/>}
             </div>
         </div>
     );
