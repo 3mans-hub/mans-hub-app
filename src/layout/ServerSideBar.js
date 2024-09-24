@@ -16,7 +16,7 @@ const ServerSidebar = () => {
             {joinStatus ?
                 <>
                     <ServerStatus/>
-                    <UserStatus/>
+                    <UserStatus/> {/* 그룹 접속 && 음성채팅 활성화 시 렌더링*/}
                 </>
                 :
                 <SideBarMain/>

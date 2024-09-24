@@ -23,7 +23,7 @@ const SignUp = () => {
     }, [email, password]);
 
     return (
-        <div>
+
             <div className={styles.container}>
                 <h1 className={styles.title}>로그인</h1>
                 <SignUpInput type={'text'} content={'이메일'} setValue={setEmail}/>
@@ -35,7 +35,7 @@ const SignUp = () => {
                 <SignUpBtn content={'로그인'} type={inputState}/>
                 <div className={styles.findPW}>비밀번호 찾기</div>
             </div>
-        </div>
+
     );
 };
 
