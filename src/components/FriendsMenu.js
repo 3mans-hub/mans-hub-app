@@ -1,16 +1,35 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styles from './styles/FriendsMenu.module.scss';
 
 const FriendsMenu = () => {
+
+    // 버튼 목록을 배열로 정의 (active 클래스 부여하기 쉽게)
+    const buttons = ['친구', '온라인', '모두', '대기 중', '차단 목록'];
+    const [activeButton, setActiveButton] = useState(buttons[0]); // '친구'가 디폴트값
+
+    // 액티브 부여 함수
+    const setActiveHandler = (buttonName) => {
+        setActiveButton(buttonName);
+    };
+
     return (
         <div className={styles.container}>
             <nav className={styles.navbar}>
-                <button className={styles.navBtn}>친구</button>
-                <button className={styles.navBtn}>온라인</button>
-                <button className={styles.navBtn}>모두</button>
-                <button className={styles.navBtn}>대기 중</button>
-                <button className={styles.navBtn}>차단 목록</button>
-                <button className={styles.addFriendButton}>친구 추가하기</button>
+                {buttons.map((button) => (
+                    <button
+                        key={button}
+                        className={`${styles.navBtn} ${activeButton === button ? styles.active : ''}`}
+                        onClick={() => setActiveHandler(button)}
+                    >
+                        {button}
+                    </button>
+                ))}
+                <button
+                    className={styles.addFriendButton}
+                    onClick={() => setActiveHandler('친구 추가하기')}
+                >
+                    친구 추가하기
+                </button>
             </nav>
             <div className={styles.character}>
                 <img
