@@ -2,7 +2,8 @@ import React from 'react';
 import styles from './styles/SideBarMain.module.scss';
 import { FaDiscord, FaHeadphones } from 'react-icons/fa';
 import {HiMicrophone} from "react-icons/hi";
-import {IoMdSettings} from "react-icons/io"; // Discord 아이콘 사용 예시
+import {IoMdSettings} from "react-icons/io";
+import UserStatus from "./UserStatus"; // Discord 아이콘 사용 예시
 
 // 더미 데이터: 다이렉트 메시지 목록
 const directMessages = [
@@ -43,18 +44,7 @@ const SideBarMain = () => {
             </div>
 
             {/* 하단 유저 상태 */}
-            <div className={styles.userInfo}>
-                <div className={styles.avatar}></div>
-                <div className={styles.userDetails}>
-                    <p className={styles.userName}>유저1</p>
-                    <p className={styles.userStatusText}>온라인</p>
-                </div>
-                <div className={styles.controls}>
-                    <HiMicrophone className={styles.icon}/>
-                    <FaHeadphones className={styles.icon}/>
-                    <IoMdSettings className={styles.icon}/>
-                </div>
-            </div>
+            <UserStatus/>
         </div>
     );
 };

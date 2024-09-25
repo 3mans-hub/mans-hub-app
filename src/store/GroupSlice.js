@@ -12,6 +12,9 @@ const initialState = {
 
     // 더미데이터입니다 (api에서 받아온 객체로 수정)
     groupList: ['그룹1', '그룹2'],
+
+    // UI를 위해 현재 접속중인 그룹 내 채널 (채팅, 음성, 게시판 등등)
+    joinChanel: "채팅" // 기본값
 }
 
 const groupSlice = createSlice({
@@ -21,9 +24,13 @@ const groupSlice = createSlice({
         joinGroup: (state, action) => {
             state.joinGroupStatus = action.payload.status
             state.currentGroup = action.payload.group; // 현재 접속한 그룹 정보
+            state.joinChanel = "채팅 채널" // 그룹 이동 시 채널 초기화
         },
         addGroup(state, action) {
             state.groupList = action.payload
+        },
+        changeJoinChanel(state, action) {
+            state.joinChanel = action.payload
         }
     }
 })
