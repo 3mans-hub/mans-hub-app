@@ -14,6 +14,13 @@ const MainPage = () => {
 
     // 그룹에 접속 유무
     const joinStatus = useSelector(state => state.group.joinGroupStatus)
+    // 현재 접속한 그룹
+    const currentGroup = useSelector(state => state.group.currentGroup);
+
+    useEffect(() => {
+        if (joinStatus) setActiveComponent('chatInterface');
+        else setActiveComponent('friendsMenu');
+    }, [joinStatus]);
 
 
     const renderComponent = () => {
