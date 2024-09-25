@@ -1,41 +1,26 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styles from './styles/FriendsMenu.module.scss';
 
 const FriendsMenu = () => {
-    const [addFriends, setAddFriends] = useState(false);
-
-    const handleViewAllFriends = () => {
-        setAddFriends(false);
-    };
-
-    const handleAddFriends = () => {
-        setAddFriends(true);
-    };
-
     return (
         <div className={styles.container}>
-            <div className={styles.header}>
-                <button onClick={handleViewAllFriends} className={styles.viewAllFriendsButton}>
-                    전체 친구목록 보기
-                </button>
-                <button onClick={handleAddFriends} className={styles.addButton}>
-                    친구 추가하기
-                </button>
+            <nav className={styles.navbar}>
+                <button className={styles.navBtn}>친구</button>
+                <button className={styles.navBtn}>온라인</button>
+                <button className={styles.navBtn}>모두</button>
+                <button className={styles.navBtn}>대기 중</button>
+                <button className={styles.navBtn}>차단 목록</button>
+                <button className={styles.addFriendButton}>친구 추가하기</button>
+            </nav>
+            <div className={styles.character}>
+                <img
+                    src="https://search.pstatic.net/sunny/?src=https%3A%2F%2Fcdn.dribbble.com%2Fusers%2F1218478%2Fscreenshots%2F18592319%2Fwumpohug_4x.png&type=a340"
+                    alt="Wumpus"
+                    className={styles.image}
+                />
+                <p className={styles.text}>아무도 Wumpus와 놀고 싶지 않은가 봐요.</p>
+                <p className={styles.text}>친구가 온라인일때의 UI 따로 작성해야 함</p>
             </div>
-            {addFriends ? (
-                <div className={styles.content}>
-                    <p>3Mans 사용자명을 사용하여 친구를 추가할 수 있습니다.</p>
-                    <div className={styles.inputGroup}>
-                        <input type="text" placeholder="사용자명#0000" className={styles.friendInput}/>
-                        <button className={styles.addFriendButton}>친구 요청 보내기</button>
-                    </div>
-                </div>
-            ) : (
-                <div className={styles.friendsList}>
-                    {/* 여기에 전체 친구 목록 컴포넌트 또는 리스트를 렌더링 */}
-                    <p>친구가 없어 임마.</p>
-                </div>
-            )}
         </div>
     );
 };
