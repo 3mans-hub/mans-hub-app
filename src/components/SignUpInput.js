@@ -3,7 +3,7 @@ import styles from './styles/SignUpInput.module.scss'
 
 
 
-const SignUpInput = ({content, type, setValue}) => {
+const SignUpInput = ({content, type, setValue, disable}) => {
 
     const inputValue= (e) => {
         setValue(e.target.value);
@@ -12,7 +12,7 @@ const SignUpInput = ({content, type, setValue}) => {
 
     return (
         <div>
-            <input className={styles.signUpInput} type={type} placeholder={content} onChange={inputValue}/>
+            <input className={!disable ? styles.signUpInput : styles.disabledInput} type={type} placeholder={content} onChange={inputValue} disabled={disable}/>
         </div>
     );
 };

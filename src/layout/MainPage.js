@@ -10,7 +10,7 @@ import {useSelector} from "react-redux";
 
 
 const MainPage = () => {
-    const [activeComponent, setActiveComponent] = useState('friendsMenu');
+    const [activeComponent, setActiveComponent] = useState('chatInterface');
 
     // 그룹에 접속 유무
     const joinStatus = useSelector(state => state.group.joinGroupStatus)
