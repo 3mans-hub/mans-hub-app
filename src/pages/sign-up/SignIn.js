@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import styles from "./SignIn.module.scss";
 import SignUpInput from "../../components/SignUpInput";
 import SignUpBtn from "../../components/SignUpBtn";
+import {useNavigate} from "react-router-dom";
 
 const SignIn = () => {
 
@@ -10,6 +11,8 @@ const SignIn = () => {
     const [password, setPassword] = useState("");
 
     const [inputState, setInputState] = useState(false);
+
+    let navigate = useNavigate();
 
     // 아직 조건 생성 X, 일단 이메일하고 비밀번호를 1글자 이상 입력할경우만 버튼 활성화
     useEffect(() => {
@@ -22,6 +25,10 @@ const SignIn = () => {
 
     }, [email, password]);
 
+    const signUp = () => {
+        navigate('/sign-up')
+    }
+
     return (
         <div>
             <div className={styles.container}>
@@ -33,7 +40,10 @@ const SignIn = () => {
                     자동로그인
                 </div>
                 <SignUpBtn content={'로그인'} type={inputState}/>
+                <div className={styles.navLink}>
+                <div className={styles.findPW} onClick={signUp}>회원가입</div>
                 <div className={styles.findPW}>비밀번호 찾기</div>
+                </div>
             </div>
         </div>
     );
