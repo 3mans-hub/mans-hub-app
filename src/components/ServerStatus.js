@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import styles from './styles/ServerStatus.module.scss';
 import { MdKeyboardArrowDown } from "react-icons/md";
@@ -9,6 +9,10 @@ const ServerStatus = () => {
     const dispatch = useDispatch();
     const currentGroup = useSelector(state => state.group.currentGroup);
     const [activeMenu, setActiveMenu] = useState("채팅 채널"); // 기본값
+
+    useEffect(() => {
+        setActiveMenu("채팅 채널")
+    }, [currentGroup]);
 
     // 메뉴 목록을 배열로 관리
     const menuItems = [

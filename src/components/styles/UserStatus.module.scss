@@ -47,6 +47,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  font-size: 0.7rem;
+  padding-bottom: 10px;
 
   .avatar {
     width: 40px;
@@ -59,14 +61,17 @@
   .userDetails {
     display: flex;
     flex-direction: column;
+    justify-content: space-around;
 
     .userName {
       font-weight: bold;
+      margin: 0;
     }
 
     .userStatusText {
       font-size: 0.8rem;
       color: #b9bbbe;
+      margin: 0 0 10px 0;
     }
   }
 
