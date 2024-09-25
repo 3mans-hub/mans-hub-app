@@ -54,3 +54,56 @@
 .inputField:focus, .sendButton:focus {
   outline: none;
 }
+
+/* 유저 입력 영역 디자인 */
+.userInputArea {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100px;
+  margin-top: 500px;
+  background-color: #2E2F2D;
+}
+
+.userInputArea .inputField {
+  padding: 15px 20px;
+  margin-bottom: 20px;
+  border: none;
+  border-radius: 20px;
+  background-color: #3C3D3A;
+  color: #FFFFFF;
+  font-size: 1.2rem;
+  box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.2);
+  width: 300px;
+  text-align: center;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.userInputArea .inputField:focus {
+  background-color: #4C4D4A;
+  box-shadow: inset 2px 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.userInputArea .sendButton {
+  padding: 15px 30px;
+  border: none;
+  background-color: #626361;
+  color: white;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+  width: 200px;
+  text-align: center;
+}
+
+.userInputArea .sendButton:hover {
+  background-color: #7B7D7A;
+  box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.4);
+}
+
+.inputField:focus, .sendButton:focus {
+  outline: none;
+}
