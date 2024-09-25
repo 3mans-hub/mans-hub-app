@@ -8,7 +8,7 @@ import ChatInterface from "../components/ChatInterface";
 import FriendsMenu from "../components/FriendsMenu";
 
 const MainPage = () => {
-    const [activeComponent, setActiveComponent] = useState('friendsMenu');
+    const [activeComponent, setActiveComponent] = useState('chatInterface');
 
     const renderComponent = () => {
         switch (activeComponent) {
