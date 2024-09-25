@@ -56,8 +56,8 @@ const Sidebar = () => {
                 </div>
             ))}
 
-            <div className={styles.addGroup}>
-                <PiPlus onClick={addGroupHandler} />
+            <div className={styles.addGroup} onClick={addGroupHandler}>
+                <PiPlus />
             </div>
 
         </div>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import styles from './styles/MainPage.module.scss';
 import { Outlet } from 'react-router-dom';
 import ServerSideBar from "./ServerSideBar";
@@ -6,9 +6,22 @@ import SideBar from "./SideBar";
 import RightSideBar from "./RightSideBar";
 import ChatInterface from "../components/ChatInterface";
 import FriendsMenu from "../components/FriendsMenu";
+import {useSelector} from "react-redux";
+
 
 const MainPage = () => {
     const [activeComponent, setActiveComponent] = useState('chatInterface');
+
+    // 그룹에 접속 유무
+    const joinStatus = useSelector(state => state.group.joinGroupStatus)
+    // 현재 접속한 그룹
+    const currentGroup = useSelector(state => state.group.currentGroup);
+
+    useEffect(() => {
+        if (joinStatus) setActiveComponent('chatInterface');
+        else setActiveComponent('friendsMenu');
+    }, [joinStatus]);
+
 
     const renderComponent = () => {
         switch (activeComponent) {

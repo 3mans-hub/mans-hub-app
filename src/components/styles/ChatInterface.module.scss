@@ -9,46 +9,46 @@
 .messagesList {
   flex: 1;
   overflow-y: auto;
-  padding: 40px;
-  margin: 0 10%;
+  //padding: 40px; // 크기좀 다듬어 봤습니다 - 기범
+  //margin: 0 10%;
   background-color: #2E2F2D;
 }
 
 .message {
   background-color: #383A38;
   color: #FFFFFF;
-  padding: 20px 30px;
-  margin-bottom: 20px;
+  //padding: 20px 30px;
+  //margin-bottom: 20px;
   border-radius: 20px;
   max-width: 90%;
-  font-size: 1.2rem;
+  font-size: 1rem;
 }
 
 .inputArea {
   display: flex;
-  padding: 20px 10%;
+  padding: 15px;
   background-color: #292A28;
 }
 
 .inputField {
   flex: 1;
   padding: 15px 20px;
-  margin-right: 20px;
+  //margin-right: 20px;
   border: none;
   border-radius: 20px;
   background-color: #292A28;
   color: #FFFFFF;
-  font-size: 1.2rem;
+  font-size: 1rem;
 }
 
 .sendButton {
-  padding: 15px 30px;
+  padding: 15px 20px;
   border: none;
   background-color: #626361;
   color: white;
   border-radius: 20px;
   cursor: pointer;
-  font-size: 1.2rem;
+  font-size: 1rem;
 }
 
 .inputField:focus, .sendButton:focus {

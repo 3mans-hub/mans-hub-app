@@ -39,7 +39,7 @@ const SignUp = () => {
     }
 
     return (
-        <div>
+
             <div className={styles.container}>
                 <h1 className={styles.title}>회원가입</h1>
                 <SignUpInput type={'text'} content={'이메일'} setValue={setEmail} disable={step > 1}/>
@@ -53,7 +53,7 @@ const SignUp = () => {
                 {( 2 < step && step < 5 ) && <SignUpBtn content={'다음'} type={userInput() !== ""} eventHandler={nextStep}/>}
                 {step === 5 && <SignUpBtn content={'회원가입'} type={passwordConfirm !== ""}/>}
             </div>
-        </div>
+
     );
 
 };
