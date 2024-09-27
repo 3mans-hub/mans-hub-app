@@ -1,8 +1,6 @@
 import React from 'react';
 import styles from './styles/SideBarMain.module.scss';
-import { FaDiscord, FaHeadphones } from 'react-icons/fa';
-import {HiMicrophone} from "react-icons/hi";
-import {IoMdSettings} from "react-icons/io";
+import { FaDiscord } from 'react-icons/fa';
 import UserStatus from "./UserStatus"; // Discord 아이콘 사용 예시
 
 // 더미 데이터: 다이렉트 메시지 목록
