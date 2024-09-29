@@ -9,10 +9,11 @@ const ChatInterface = () => {
     const [input, setInput] = useState('');        // 메시지 입력 필드 상태
     const [user, setUser] = useState('');          // 사용자 이름 상태
     const [userInput, setUserInput] = useState(''); // 사용자 이름 입력 필드 상태
-    const [stompClient, setStompClient] = useState(null); // STOMP 클라이언트 상태
+    const [stompClient, setStompClient] = useState(null);  // STOMP 클라이언트 상태
 
+    // 시작할때 localhost:6969/chat-websocket 들어가서 stomp 로그인 해야함
     useEffect(() => {
-        const socket = new SockJS(`${CHAT_URL}`); // Spring Boot 서버와 연결
+        const socket = new SockJS(`${CHAT_URL}`);
         const client = Stomp.over(socket);
 
         client.connect({}, () => {
@@ -46,7 +47,7 @@ const ChatInterface = () => {
     const sendMessage = () => {
         if (input.trim() && user.trim() && stompClient) {
             const messageObject = {
-                user: user,  // 사용자 이름
+                user: user,  // 사용자 이름 나중에 user 를 name 으로 바꾸면 됨
                 content: input  // 메시지 내용
             };
             console.log("Sending message: ", messageObject); // 메시지 확인
