@@ -1,32 +1,62 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import SockJS from 'sockjs-client';
+import { Stomp } from '@stomp/stompjs';
 import styles from './styles/ChatInterface.module.scss';
+import {CHAT_URL} from '../config/host-config'
 
 const ChatInterface = () => {
     const [messages, setMessages] = useState([]);  // 메시지 리스트 상태
-    const [input, setInput] = useState('');        // 입력 필드 상태
+    const [input, setInput] = useState('');        // 메시지 입력 필드 상태
     const [user, setUser] = useState('');          // 사용자 이름 상태
     const [userInput, setUserInput] = useState(''); // 사용자 이름 입력 필드 상태
+    const [stompClient, setStompClient] = useState(null); // STOMP 클라이언트 상태
+
+    useEffect(() => {
+        const socket = new SockJS(`${CHAT_URL}`); // Spring Boot 서버와 연결
+        const client = Stomp.over(socket);
+
+        client.connect({}, () => {
+            console.log('Connected to WebSocket');
+
+            // 메시지 수신 시 호출되는 구독 경로 설정
+            client.subscribe('/topic/public', (message) => {
+                const receivedMessage = JSON.parse(message.body);
+                setMessages(prevMessages => [...prevMessages, receivedMessage]);
+            });
+
+            setStompClient(client); // STOMP 클라이언트 설정
+        });
+
+        return () => {
+            if (client) client.disconnect();
+        };
+    }, []);
 
     // 메시지 입력 핸들러
-    const handleInput = event => {
+    const handleInput = (event) => {
         setInput(event.target.value);
     };
 
     // 사용자 이름 입력 핸들러
-    const handleUserInput = event => {
+    const handleUserInput = (event) => {
         setUserInput(event.target.value);
     };
 
     // 메시지 전송 핸들러
     const sendMessage = () => {
-        if (input.trim() && user.trim()) {
-            setMessages([...messages, { user, text: input }]); // 메시지 객체에 사용자 이름과 텍스트 포함
+        if (input.trim() && user.trim() && stompClient) {
+            const messageObject = {
+                user: user,  // 사용자 이름
+                content: input  // 메시지 내용
+            };
+            console.log("Sending message: ", messageObject); // 메시지 확인
+            stompClient.send('/app/sendMessage', {}, JSON.stringify(messageObject));
             setInput(''); // 입력 필드 초기화
         }
     };
 
     // Enter 키로 메시지 전송
-    const handleKeyPress = event => {
+    const handleKeyPress = (event) => {
         if (event.key === 'Enter') {
             sendMessage();
         }
@@ -59,7 +89,7 @@ const ChatInterface = () => {
                     <div className={styles.messagesList}>
                         {messages.map((message, index) => (
                             <div key={index} className={styles.message}>
-                                <strong>{message.user}:</strong> {message.text}
+                                <strong>{message.name}:</strong> {message.content}
                             </div>
                         ))}
                     </div>
