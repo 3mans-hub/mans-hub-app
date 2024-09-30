@@ -9,7 +9,7 @@ class SocketService {
     }
 
     connect() {
-        this.socket = io('http://localhost:8080');
+        this.socket = io('http://localhost:6969');
     }
 
     on(event, callback) {
