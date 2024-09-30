@@ -26,7 +26,32 @@ const SignUp = () => {
        }
     }, [email]);
 
-    const nextStep = () => {
+    const nextStep = async () => {
+
+        if(step === 1) {
+
+            const response = await fetch('http://localhost:6969/sign_up/email', {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    email:email
+                }),
+            });
+
+            const data =await response.text();
+
+            console.log(data);
+
+            if(data === "registered") {
+                alert("이미 가입중인 유저입니다!!");
+                return;
+            }
+
+        }
+
+
         setStep(step + 1);
     }
 
