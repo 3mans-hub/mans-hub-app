@@ -48,8 +48,9 @@ const ChatInterface = () => {
         if (input.trim() && user.trim() && stompClient) {
             const messageObject = {
                 user: user,  // 사용자 이름 나중에 user 를 name 으로 바꾸면 됨
-                content: input  // 메시지 내용
+                content: input
             };
+
             console.log("Sending message: ", messageObject); // 메시지 확인
             stompClient.send('/app/sendMessage', {}, JSON.stringify(messageObject));
             setInput(''); // 입력 필드 초기화
