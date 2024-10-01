@@ -48,6 +48,77 @@
     }
   }
 
+  .content {
+    margin-top: 50px;
+    padding: 20px;
+    background-color: #40444B;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 400px;
+    text-align: left;
+
+    p {
+      margin-bottom: 20px;
+      color: #b9bbbe;
+      font-size: 1rem;
+    }
+
+    .inputGroup {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+
+      .friendInput {
+        padding: 10px;
+        border-radius: 6px;
+        border: 1px solid #5f6368;
+        background-color: #2E2F2D;
+        color: white;
+        font-size: 1rem;
+        outline: none;
+        transition: border 0.3s;
+
+        &:focus {
+          border: 1px solid #3BA55C;
+        }
+
+        &::placeholder {
+          color: #b9bbbe;
+        }
+      }
+
+      .addFriendButton {
+        background-color: #3BA55C;
+        border: none;
+        padding: 12px 20px;
+        color: white;
+        font-size: 1rem;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+
+        &:hover {
+          background-color: #2d7d46;
+        }
+      }
+    }
+  }
+
+  .friendsList {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #40444B;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 400px;
+    text-align: center;
+
+    p {
+      color: #b9bbbe;
+      font-size: 1rem;
+    }
+  }
+
   .character {
     display: flex;
     flex-direction: column;
