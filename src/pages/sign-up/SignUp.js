@@ -29,31 +29,71 @@ const SignUp = () => {
     const nextStep = async () => {
 
         if(step === 1) {
+            const availableEmail =await checkEmail();
 
-            const response = await fetch('http://localhost:6969/sign_up/email', {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    email:email
-                }),
-            });
+            if(availableEmail) setStep(step + 1);
 
-            const data =await response.text();
+        } else if (step === 2) {
 
-            console.log(data);
+           const verification =await checkVerificationCode();
 
-            if(data === "registered") {
-                alert("이미 가입중인 유저입니다!!");
-                return;
-            }
+           if(verification) setStep(step + 1);
 
         }
 
 
-        setStep(step + 1);
     }
+
+    const checkEmail = async () => {
+        const response = await fetch('http://localhost:6969/sign_up/email', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                email:email
+            }),
+        });
+
+        const data =await response.text();
+
+        console.log(data);
+
+        if(data === "registered") {
+            alert("이미 가입중인 유저입니다!!");
+
+            return false;
+        }
+
+        return true;
+    }
+
+    const checkVerificationCode = async () => {
+        const response = await fetch('http://localhost:6969/sign_up/check_verificationCode', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                email:email,
+                verificationCode:verificationCode
+            }),
+        });
+
+        const data =await response.text();
+
+        console.log(data);
+
+        if(data === "인증 성공") {
+
+            return true;
+        }
+
+        alert(data);
+
+        return false;
+    }
+
 
     const userInput = () => {
         if (step === 3) {
