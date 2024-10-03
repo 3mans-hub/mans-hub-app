@@ -43,19 +43,42 @@ const ChatInterface = () => {
         setUserInput(event.target.value);
     };
 
+    const formatDateForDisplay = (dateString) => {
+        const date = new Date(dateString);
+        const hours = date.getHours();
+        const minutes = String(date.getMinutes()).padStart(2, '0');  // 분 추가
+        const period = hours >= 12 ? '오후' : '오전';
+        const hourIn12 = hours % 12 || 12;  // 0시는 12시로 처리
+        const formattedDate =
+            `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')} 
+            ${period} ${hourIn12}:${minutes}
+            `;
+        return formattedDate;
+    };
+
     // 메시지 전송 핸들러
     const sendMessage = () => {
         if (input.trim() && user.trim() && stompClient) {
+            const today = new Date();
+            const formattedDate = today.getFullYear() + '-' +
+                String(today.getMonth() + 1).padStart(2, '0') + '-' +
+                String(today.getDate()).padStart(2, '0') + 'T' +
+                String(today.getHours()).padStart(2, '0') + ':' +
+                String(today.getMinutes()).padStart(2, '0') + ':' +
+                String(today.getSeconds()).padStart(2, '0');
+
             const messageObject = {
-                user: user,  // 사용자 이름 나중에 user 를 name 으로 바꾸면 됨
-                content: input
+                user: user,
+                content: input,
+                createAt: formattedDate
             };
 
-            console.log("Sending message: ", messageObject); // 메시지 확인
+            console.log("Sending message: ", messageObject);
             stompClient.send('/app/sendMessage', {}, JSON.stringify(messageObject));
-            setInput(''); // 입력 필드 초기화
+            setInput('');
         }
     };
+
 
     // Enter 키로 메시지 전송
     const handleKeyPress = (event) => {
@@ -91,7 +114,8 @@ const ChatInterface = () => {
                     <div className={styles.messagesList}>
                         {messages.map((message, index) => (
                             <div key={index} className={styles.message}>
-                                <strong>{message.name}:</strong> {message.content}
+                                <div className={styles.messageTime}>{formatDateForDisplay(message.createAt)}</div>
+                                <div className={styles.messageContent}>{message.content}</div>
                             </div>
                         ))}
                     </div>

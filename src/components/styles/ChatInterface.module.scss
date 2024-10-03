@@ -22,7 +22,21 @@
   border-radius: 20px;
   max-width: 90%;
   font-size: 1rem;
+  display: flex;
+  flex-direction: column;  /* 수직 배치 */
 }
+
+.messageTime {
+  font-size: 0.85rem;  /* 시간의 글씨 크기를 줄임 */
+  color: #BBBBBB;  /* 시간에 다른 색상 적용 */
+  margin-bottom: 5px;  /* 내용과 시간 사이에 간격 추가 */
+}
+
+.messageContent {
+  font-size: 1rem;  /* 메시지 내용 글씨 크기 */
+  color: #FFFFFF;  /* 기본 색상 */
+}
+
 
 .inputArea {
   display: flex;
