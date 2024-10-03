@@ -1,6 +1,3 @@
-
-// socket.io 클라이언트 설정 및 메시지 전송을 위한 파일
-
 import io from 'socket.io-client';
 
 class SocketService {
@@ -9,8 +6,17 @@ class SocketService {
     }
 
     connect() {
-        this.socket = io('http://localhost:6969');
+        if (!this.socket) {
+            this.socket = io('http://localhost:6969');
+            console.log("서버와 연결되었습니다."); // 연결 확인 로그
+        }
     }
+
+    sendJoinVoiceChannel(groupName) {
+        if (!this.socket) return;
+        this.socket.emit('join-voice-channel', { group: groupName });
+        console.log(`${groupName} 그룹의 음성 채널에 참여 요청을 보냈습니다.`);
+    } // 위 요청을 서버의 TurnCredentialsService 에서 처리
 
     on(event, callback) {
         if (!this.socket) return;
