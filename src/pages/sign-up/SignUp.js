@@ -155,7 +155,7 @@ const SignUp = () => {
     }
 
     const validatePassword = (password) => {
-        return /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.{8,12})/.test(password);
+        return /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,12}$/;
     }
 
     const validatePasswordConfirm = (password, passwordConfirm) => {
