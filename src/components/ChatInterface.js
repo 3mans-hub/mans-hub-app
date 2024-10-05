@@ -1,31 +1,36 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import SockJS from 'sockjs-client';
 import { Stomp } from '@stomp/stompjs';
 import styles from './styles/ChatInterface.module.scss';
-import {CHAT_URL} from '../config/host-config'
+import { CHAT_URL } from '../config/host-config';
 
 const ChatInterface = () => {
-    const [messages, setMessages] = useState([]);  // 메시지 리스트 상태
-    const [input, setInput] = useState('');        // 메시지 입력 필드 상태
-    const [user, setUser] = useState('');          // 사용자 이름 상태
-    const [userInput, setUserInput] = useState(''); // 사용자 이름 입력 필드 상태
-    const [stompClient, setStompClient] = useState(null);  // STOMP 클라이언트 상태
+    const [messages, setMessages] = useState([]);
+    const [input, setInput] = useState('');
+    const [user, setUser] = useState('');
+    const [userInput, setUserInput] = useState('');
+    const [stompClient, setStompClient] = useState(null);
 
-    // 시작할때 localhost:6969/chat-websocket 들어가서 stomp 로그인 해야함
+    const messagesEndRef = useRef(null);
+
+    const scrollToBottom = () => {
+        if (messagesEndRef.current) {
+            messagesEndRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
+        }
+    };
+
     useEffect(() => {
         const socket = new SockJS(`${CHAT_URL}`);
         const client = Stomp.over(socket);
 
         client.connect({}, () => {
             console.log('Connected to WebSocket');
-
-            // 메시지 수신 시 호출되는 구독 경로 설정
             client.subscribe('/topic/public', (message) => {
                 const receivedMessage = JSON.parse(message.body);
                 setMessages(prevMessages => [...prevMessages, receivedMessage]);
             });
 
-            setStompClient(client); // STOMP 클라이언트 설정
+            setStompClient(client);
         });
 
         return () => {
@@ -33,38 +38,56 @@ const ChatInterface = () => {
         };
     }, []);
 
-    // 메시지 입력 핸들러
+    useEffect(() => {
+        scrollToBottom();
+    }, [messages]);
+
     const handleInput = (event) => {
         setInput(event.target.value);
     };
 
-    // 사용자 이름 입력 핸들러
     const handleUserInput = (event) => {
         setUserInput(event.target.value);
     };
 
-    // 메시지 전송 핸들러
+    const formatDateForDisplay = (dateString) => {
+        const date = new Date(dateString);
+        const hours = date.getHours();
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+        const period = hours >= 12 ? '오후' : '오전';
+        const hourIn12 = hours % 12 || 12;
+        const formattedDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')} ${period} ${hourIn12}:${minutes}`;
+        return formattedDate;
+    };
+
     const sendMessage = () => {
         if (input.trim() && user.trim() && stompClient) {
+            const today = new Date();
+            const formattedDate = today.getFullYear() + '-' +
+                String(today.getMonth() + 1).padStart(2, '0') + '-' +
+                String(today.getDate()).padStart(2, '0') + 'T' +
+                String(today.getHours()).padStart(2, '0') + ':' +
+                String(today.getMinutes()).padStart(2, '0') + ':' +
+                String(today.getSeconds()).padStart(2, '0');
+
             const messageObject = {
-                user: user,  // 사용자 이름 나중에 user 를 name 으로 바꾸면 됨
-                content: input
+                user: user,
+                content: input,
+                createAt: formattedDate
             };
 
-            console.log("Sending message: ", messageObject); // 메시지 확인
+            console.log("Sending message: ", messageObject);
             stompClient.send('/app/sendMessage', {}, JSON.stringify(messageObject));
-            setInput(''); // 입력 필드 초기화
+            setInput('');
         }
     };
 
-    // Enter 키로 메시지 전송
     const handleKeyPress = (event) => {
         if (event.key === 'Enter') {
             sendMessage();
         }
     };
 
-    // 사용자 이름 저장
     const handleUserSubmit = () => {
         if (userInput.trim()) {
             setUser(userInput);
@@ -91,9 +114,18 @@ const ChatInterface = () => {
                     <div className={styles.messagesList}>
                         {messages.map((message, index) => (
                             <div key={index} className={styles.message}>
-                                <strong>{message.name}:</strong> {message.content}
+                                <div className={styles.messageInfo}>
+                                    <div className={styles.userEmoji}>
+                                        😀
+                                    </div>
+                                    <div className={styles.messageDetails}>
+                                        <div className={styles.messageTime}>{formatDateForDisplay(message.createAt)}</div>
+                                        <div className={styles.messageContent}>{message.content}</div>
+                                    </div>
+                                </div>
                             </div>
                         ))}
+                        <div ref={messagesEndRef} /> {/* 스크롤을 위한 참조 */}
                     </div>
                     <div className={styles.inputArea}>
                         <input
