@@ -1,32 +1,38 @@
-
-// socket.io 클라이언트 설정 및 메시지 전송을 위한 파일
-
-import io from 'socket.io-client';
+import { Client } from '@stomp/stompjs';
+import SockJS from 'sockjs-client';
 
 class SocketService {
     constructor() {
-        this.socket = null;
+        this.stompClient = null;
     }
 
     connect() {
-        this.socket = io('http://localhost:6969');
+        const socket = new SockJS('http://localhost:6969/ws');
+        this.stompClient = new Client({
+            webSocketFactory: () => socket,
+            debug: (str) => {
+                console.log('STOMP: ' + str);
+            }
+        });
+
+        this.stompClient.onConnect = (frame) => {
+            console.log('Connected: ' + frame);
+            this.stompClient.subscribe('/topic/join-voice-channel', (message) => {
+                console.log('Received message:', message.body);
+            });
+        };
+
+        this.stompClient.activate();
     }
 
-    on(event, callback) {
-        if (!this.socket) return;
-        this.socket.on(event, callback);
-    }
-
-    sendOffer(offer) {
-        this.socket.emit('offer', offer);
-    }
-
-    sendAnswer(answer) {
-        this.socket.emit('answer', answer);
-    }
-
-    sendIceCandidate(candidate) {
-        this.socket.emit('ice-candidate', candidate);
+    sendJoinVoiceChannel(groupName) {
+        if (this.stompClient && this.stompClient.connected) {
+            this.stompClient.publish({
+                destination: '/app/join-voice-channel',
+                body: JSON.stringify({ group: groupName })
+            });
+            console.log(`${groupName} 그룹의 음성 채널에 참여 요청을 보냈습니다.`);
+        }
     }
 }
 
