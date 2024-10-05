@@ -1,38 +1,38 @@
-import io from 'socket.io-client';
+import { Client } from '@stomp/stompjs';
+import SockJS from 'sockjs-client';
 
 class SocketService {
     constructor() {
-        this.socket = null;
+        this.stompClient = null;
     }
 
     connect() {
-        if (!this.socket) {
-            this.socket = io('http://localhost:6969');
-            console.log("서버와 연결되었습니다."); // 연결 확인 로그
-        }
+        const socket = new SockJS('http://localhost:6969/ws');
+        this.stompClient = new Client({
+            webSocketFactory: () => socket,
+            debug: (str) => {
+                console.log('STOMP: ' + str);
+            }
+        });
+
+        this.stompClient.onConnect = (frame) => {
+            console.log('Connected: ' + frame);
+            this.stompClient.subscribe('/topic/join-voice-channel', (message) => {
+                console.log('Received message:', message.body);
+            });
+        };
+
+        this.stompClient.activate();
     }
 
     sendJoinVoiceChannel(groupName) {
-        if (!this.socket) return;
-        this.socket.emit('join-voice-channel', { group: groupName });
-        console.log(`${groupName} 그룹의 음성 채널에 참여 요청을 보냈습니다.`);
-    } // 위 요청을 서버의 TurnCredentialsService 에서 처리
-
-    on(event, callback) {
-        if (!this.socket) return;
-        this.socket.on(event, callback);
-    }
-
-    sendOffer(offer) {
-        this.socket.emit('offer', offer);
-    }
-
-    sendAnswer(answer) {
-        this.socket.emit('answer', answer);
-    }
-
-    sendIceCandidate(candidate) {
-        this.socket.emit('ice-candidate', candidate);
+        if (this.stompClient && this.stompClient.connected) {
+            this.stompClient.publish({
+                destination: '/app/join-voice-channel',
+                body: JSON.stringify({ group: groupName })
+            });
+            console.log(`${groupName} 그룹의 음성 채널에 참여 요청을 보냈습니다.`);
+        }
     }
 }
 
