@@ -8,10 +8,13 @@
 
 .messagesList {
   display: flex;
-  flex-direction: column-reverse;
+  flex-direction: column;
+  justify-content: flex-end;
   flex: 1;
   overflow-y: auto;
   background-color: #2E2F2D;
+  height: 80vh;
+
 }
 
 .message {
@@ -23,7 +26,7 @@
   max-width: 90%;
   font-size: 1rem;
   display: flex;
-  flex-direction: column;  /* 수직 배치 */
+  flex-direction: column;
 }
 
 .messageTime {
@@ -47,7 +50,6 @@
 .inputField {
   flex: 1;
   padding: 15px 20px;
-  //margin-right: 20px;
   border: none;
   border-radius: 20px;
   background-color: #292A28;
@@ -120,4 +122,27 @@
 
 .inputField:focus, .sendButton:focus {
   outline: none;
+}
+
+.messageInfo {
+  display: flex;
+  align-items: center;
+}
+
+.userEmoji {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  margin-right: 10px;
+  font-size: 24px;
+  background-color: #87CEEB; /* 이모티콘 배경색 */
+  color: #fff; /* 이모티콘의 색상 */
+}
+
+.messageDetails {
+  display: flex;
+  flex-direction: column;
 }
