@@ -17,8 +17,10 @@ class SocketService {
 
         this.stompClient.onConnect = (frame) => {
             console.log('Connected: ' + frame);
+            // 음성 채널 참여 시 서버에서 보내는 메시지를 구독
             this.stompClient.subscribe('/topic/join-voice-channel', (message) => {
                 console.log('Received message:', message.body);
+                // 여기에 필요한 콜백 설정
             });
         };
 
