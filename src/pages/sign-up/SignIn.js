@@ -12,6 +12,8 @@ const SignIn = () => {
 
     const [inputState, setInputState] = useState(false);
 
+    const [errorMessage, setErrorMessage] = useState(null);
+
     let navigate = useNavigate();
 
     // 아직 조건 생성 X, 일단 이메일하고 비밀번호를 1글자 이상 입력할경우만 버튼 활성화
@@ -33,6 +35,36 @@ const SignIn = () => {
         navigate('/find-password')
     }
 
+    const loginBtnEventHandler = async () => {
+
+        const response = await fetch('http://localhost:6969/sign_in', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                email:email,
+                password:password
+            }),
+        });
+
+        const data = await response.json();
+
+        console.log(data);
+
+        if(!data.isLogin) {
+
+            if(data.signInStatus === "EMAIL") {
+                setErrorMessage("가입되지 않은 이메일 입니다.")
+            } else if (data.signInStatus === "PASSWORD") {
+                setErrorMessage("비밀번호가 일치하지 않습니다.")
+            }
+        }
+
+
+    }
+
+
     return (
         <div>
             <div className={styles.container}>
@@ -43,7 +75,10 @@ const SignIn = () => {
                     <input type={"checkbox"}/>
                     자동로그인
                 </div>
-                <SignUpBtn content={'로그인'} type={inputState}/>
+                <div>
+                    {errorMessage && <div className={styles.errorMessage}>{errorMessage}</div>}
+                    <SignUpBtn content={'로그인'} type={inputState} eventHandler={loginBtnEventHandler}/>
+                </div>
                 <div className={styles.navLink}>
                 <div className={styles.findPW} onClick={signUp}>회원가입</div>
                 <div className={styles.findPW} onClick={findPassword}>비밀번호 찾기</div>
