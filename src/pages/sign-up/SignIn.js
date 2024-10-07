@@ -14,6 +14,8 @@ const SignIn = () => {
 
     const [errorMessage, setErrorMessage] = useState(null);
 
+    const [autoLogin, setAutoLogin] = useState(false);
+
     let navigate = useNavigate();
 
     // 아직 조건 생성 X, 일단 이메일하고 비밀번호를 1글자 이상 입력할경우만 버튼 활성화
@@ -35,6 +37,10 @@ const SignIn = () => {
         navigate('/find-password')
     }
 
+    const autoLoginHandler = () => {
+        setAutoLogin(prevState => !prevState)
+    }
+
     const loginBtnEventHandler = async () => {
 
         const response = await fetch('http://localhost:6969/sign_in', {
@@ -44,7 +50,8 @@ const SignIn = () => {
             },
             body: JSON.stringify({
                 email:email,
-                password:password
+                password:password,
+                autoLogin: autoLogin
             }),
         });
 
@@ -59,7 +66,18 @@ const SignIn = () => {
             } else if (data.signInStatus === "PASSWORD") {
                 setErrorMessage("비밀번호가 일치하지 않습니다.")
             }
+        } else {
+            if(autoLogin) {
+                localStorage.setItem('userData', JSON.stringify(data));
+            }
+
+            sessionStorage.setItem ('userData', JSON.stringify(data));
+
+            navigate("/");
         }
+
+
+
 
 
     }
@@ -72,7 +90,7 @@ const SignIn = () => {
                 <SignUpInput type={'text'} content={'이메일'} setValue={setEmail} status={true}/>
                 <SignUpInput type={'password'} content={'비밀번호'} setValue={setPassword} status={true}/>
                 <div className={styles.checkBox}>
-                    <input type={"checkbox"}/>
+                    <input type={"checkbox"} onChange={autoLoginHandler}/>
                     자동로그인
                 </div>
                 <div>
