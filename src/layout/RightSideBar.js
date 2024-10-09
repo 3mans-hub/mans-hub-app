@@ -1,14 +1,27 @@
 import React, { useState } from 'react';
 import styles from "./styles/ServerSideBar.module.scss";
-import {Outlet} from "react-router-dom";
+import {Outlet, useNavigate} from "react-router-dom";
 
 const RightSideBar = () => {
 
     const [view, setView] = useState('friends');
 
+    const navigate = useNavigate();
+
+    const logOutBtnClickHandler = () => {
+
+        sessionStorage.removeItem('userData');
+        localStorage.removeItem('userData');
+
+        navigate("/sign-in");
+    }
+
     return (
         <div className={styles.serverRightSidebar}>
             {/* 지금은 클릭할때마다 바뀌게 하고 나중에는 소켓 로그인 여부로 바꾸면 될듯? */}
+
+            <div className={styles.logOutBtn} onClick={logOutBtnClickHandler}>로그 아웃</div>
+
             <p
                 className={view === 'friends' ? styles.active : styles.serverRightName}
                 onClick={() => setView('friends')}
