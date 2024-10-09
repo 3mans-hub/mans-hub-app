@@ -32,18 +32,21 @@ const FindPassword = () => {
         setStep(step + 1);
     }
 
+
+
     return (
         <div>
             <div className={styles.container}>
                 {(step === 1 || step === 2 ) && <h1 className={styles.title}>비밀번호 찾기</h1> }
                 {(step >= 3) && <h1 className={styles.title}>비밀번호 변경</h1> }
-                {(step === 1 || step === 2 ) && <SignUpInput type={'text'} content={'이메일'} setValue={setEmail} disable={step !== 1}/> }
-                {( step === 2 ) && <SignUpInput type={'text'} content={'인증번호'} setValue={setVerificationCode}/> }
+                {(step === 1 || step === 2 ) && <SignUpInput type={'text'} content={'이메일'} setValue={setEmail} disable={step !== 1}
+                                                             errorMessage={"이메일 형식이 아닙니다."} status={isEmail} value={email}/> }
+                {( step === 2 ) && <SignUpInput type={'text'} content={'인증번호'} setValue={setVerificationCode}  status={true}/> }
 
                 {step === 1 && <SignUpBtn type={isEmail} content={'인증번호 요청'} eventHandler={nextStep}/>}
                 {step === 2 && <SignUpBtn type={verificationCode !== ""} content={'인증번호 인증'} eventHandler={nextStep}/>}
 
-                {( step >= 3 ) && <SignUpInput type={'password'} content={'비밀번호'} setValue={setNewPassword}/> }
+                {( step >= 3 ) && <SignUpInput type={'password'} content={'비밀번호'} setValue={setNewPassword}  status={true}/> }
                 {( step === 4 ) && <SignUpInput type={'password'} content={'비밀번호 확인'} setValue={setConfirmPassword}/> }
 
                 {step === 3 && <SignUpBtn type={newPassword !== ""} content={'다음'} eventHandler={nextStep}/>}
