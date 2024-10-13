@@ -26,13 +26,19 @@ const MainPage = () => {
     }, []);
 
     const autoLogin = async () => {
-        const token = localStorage.getItem("userData");
+        const userData = JSON.parse(localStorage.getItem("userData")) || {};
+        const token = userData.token || null;
+        if (!token){
+            navigate("/sign-in");
+            return;
+        }
 
         if(token !== null) {
             sessionStorage.setItem('userData', token);
         }
 
         const sessionToken = sessionStorage.getItem('userData');
+        console.log(sessionToken)
 
         if (sessionToken) {
             // 4. 토큰 유효성 검사 API 호출
@@ -40,7 +46,7 @@ const MainPage = () => {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${sessionToken.token}`
+                    'Authorization': `Bearer ${token}`
                 },
             });
 
