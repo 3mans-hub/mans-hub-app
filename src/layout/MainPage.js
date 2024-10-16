@@ -28,12 +28,15 @@ const MainPage = () => {
     const autoLogin = async () => {
         const userData = JSON.parse(localStorage.getItem("userData")) || {};
         const token = userData.token || null;
+
         if (!token){
-            navigate("/sign-in");
-            return;
+            if(!sessionStorage.getItem("userData")) {
+                navigate("/sign-in");
+                return;
+            }
         }
 
-        if(token !== null) {
+        if(token) {
             sessionStorage.setItem('userData', token);
         }
 
@@ -46,9 +49,11 @@ const MainPage = () => {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
+                    'Authorization': `Bearer ${sessionToken.token}`
                 },
             });
+
+            console.log(response.text());
 
             if (response.ok) {
                 // 토큰이 유효하면 유저 정보를 불러오고, 로그인 상태 유지

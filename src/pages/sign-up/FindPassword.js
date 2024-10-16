@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import styles from "./findPassword.module.scss";
+import styles from "./FindPassword.module.scss";
 import SignUpInput from "../../components/SignUpInput";
 import SignUpBtn from "../../components/SignUpBtn";
 
@@ -32,6 +32,24 @@ const FindPassword = () => {
         setStep(step + 1);
     }
 
+    const emailVerified = async() => {
+
+        const response = await fetch('http://localhost:6969/find_password/email', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                email:email
+            }),
+        });
+
+        const data =await response.text();
+
+        console.log(data);
+
+    }
+
 
 
     return (
@@ -43,8 +61,8 @@ const FindPassword = () => {
                                                              errorMessage={"이메일 형식이 아닙니다."} status={isEmail} value={email}/> }
                 {( step === 2 ) && <SignUpInput type={'text'} content={'인증번호'} setValue={setVerificationCode}  status={true}/> }
 
-                {step === 1 && <SignUpBtn type={isEmail} content={'인증번호 요청'} eventHandler={nextStep}/>}
-                {step === 2 && <SignUpBtn type={verificationCode !== ""} content={'인증번호 인증'} eventHandler={nextStep}/>}
+                {step === 1 && <SignUpBtn type={isEmail} content={'인증번호 요청'} eventHandler={emailVerified}/>}
+                {step === 2 && <SignUpBtn type={verificationCode !== ""} content={'인증번호 인증'} eventHandler={email}/>}
 
                 {( step >= 3 ) && <SignUpInput type={'password'} content={'비밀번호'} setValue={setNewPassword}  status={true}/> }
                 {( step === 4 ) && <SignUpInput type={'password'} content={'비밀번호 확인'} setValue={setConfirmPassword}/> }
