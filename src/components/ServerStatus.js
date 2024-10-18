@@ -27,13 +27,14 @@ const ServerStatus = () => {
     ];
 
     const setActiveHandler = (menuName) => {
-        setActiveMenu(menuName); // 클릭한 메뉴 이름으로 상태 업데이트
+        setActiveMenu(menuName);  // 클릭한 메뉴 이름으로 상태 업데이트
         dispatch(groupActions.changeJoinChanel(menuName));
 
         if (menuName === '음성 채널') {
             // 음성 채널을 선택하면 서버로 연결 요청
-            socketService.connect();
-            socketService.sendJoinVoiceChannel(currentGroup); // 현재 그룹의 음성 채널에 참여하는 요청을 보냄
+            socketService.connect(() => {
+                socketService.sendJoinVoiceChannel(currentGroup);  // STOMP 클라이언트 연결 후 요청 전송
+            });
         }
     };
 
