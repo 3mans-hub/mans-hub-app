@@ -8,7 +8,7 @@ const useTurnCredentials = () => {
         const fetchTurnCredentials = async () => {
             try {
                 const response = await axios.get('http://localhost:6969/api/getTurnCredentials', {
-                    params: { username: '유저1' } // 적절한 username을 여기서 전달해야 함
+                    params: { username: 'user1' }
                 });
                 setCredentials(response.data);
             } catch (error) {

@@ -1,16 +1,29 @@
-import React, { useEffect } from 'react';
-import socketService from "../services/socketService"; // socketService에서 서버와 통신 설정을 담당
+import React, { useEffect, useState } from 'react';
+import socketService from "../services/socketService";
+import useTurnCredentials from '../hooks/useTurnCredentials';
 
 const VoiceChannel = () => {
+    const credentials = useTurnCredentials();
+
     useEffect(() => {
+        if (!credentials) return;
+
         const peerConnection = new RTCPeerConnection({
             iceServers: [
                 { urls: 'stun:stun.l.google.com:19302' },
-                { urls: 'turn:localhost:3478', username: 'generated-username', credential: 'generated-credential' }
+                { urls: `turn:localhost:3478`, username: credentials.username, credential: credentials.credential }
             ],
         });
 
-        // 상대방의 미디어 스트림을 연결하기 위한 이벤트 리스너
+        peerConnection.onicecandidate = (event) => {
+            if (event.candidate) {
+                socketService.stompClient.publish({
+                    destination: '/app/ice-candidate',
+                    body: JSON.stringify(event.candidate),
+                });
+            }
+        };
+
         peerConnection.ontrack = ({ streams: [stream] }) => {
             const audioElement = document.createElement('audio');
             audioElement.srcObject = stream;
@@ -18,45 +31,27 @@ const VoiceChannel = () => {
             document.body.appendChild(audioElement);
         };
 
-        // ICE 후보를 서버로 전송
-        peerConnection.onicecandidate = (event) => {
-            if (event.candidate) {
-                // 서버로 ICE 후보를 전송하는 로직 필요 (STOMP 프로토콜을 사용)
-                // 예: 특정 주제로 ICE 후보 메시지 발행
-                socketService.stompClient.publish({
-                    destination: '/app/ice-candidate',
-                    body: JSON.stringify(event.candidate)
-                });
-            }
-        };
-
-        // 서버에서 offer 받기
-        socketService.stompClient.onConnect = () => {
-            socketService.stompClient.subscribe('/topic/offer', async (offerMessage) => {
-                const offer = JSON.parse(offerMessage.body);
-                await peerConnection.setRemoteDescription(new RTCSessionDescription(offer));
-                const answer = await peerConnection.createAnswer();
-                await peerConnection.setLocalDescription(answer);
-                socketService.stompClient.publish({
-                    destination: '/app/answer',
-                    body: JSON.stringify(answer)
-                });
+        socketService.stompClient.subscribe('/topic/offer', async (offerMessage) => {
+            const offer = JSON.parse(offerMessage.body);
+            await peerConnection.setRemoteDescription(new RTCSessionDescription(offer));
+            const answer = await peerConnection.createAnswer();
+            await peerConnection.setLocalDescription(answer);
+            socketService.stompClient.publish({
+                destination: '/app/answer',
+                body: JSON.stringify(answer),
             });
+        });
 
-            // 서버에서 answer 받기
-            socketService.stompClient.subscribe('/topic/answer', (answerMessage) => {
-                const answer = JSON.parse(answerMessage.body);
-                peerConnection.setRemoteDescription(new RTCSessionDescription(answer));
-            });
+        socketService.stompClient.subscribe('/topic/answer', (answerMessage) => {
+            const answer = JSON.parse(answerMessage.body);
+            peerConnection.setRemoteDescription(new RTCSessionDescription(answer));
+        });
 
-            // 서버에서 ICE candidate 받기
-            socketService.stompClient.subscribe('/topic/ice-candidate', (candidateMessage) => {
-                const candidate = JSON.parse(candidateMessage.body);
-                peerConnection.addIceCandidate(new RTCIceCandidate(candidate));
-            });
-        };
+        socketService.stompClient.subscribe('/topic/ice-candidate', (candidateMessage) => {
+            const candidate = JSON.parse(candidateMessage.body);
+            peerConnection.addIceCandidate(new RTCIceCandidate(candidate));
+        });
 
-        // 마이크 스트림을 추가
         navigator.mediaDevices.getUserMedia({ audio: true })
             .then((stream) => {
                 stream.getTracks().forEach((track) => peerConnection.addTrack(track, stream));
@@ -65,9 +60,9 @@ const VoiceChannel = () => {
                 console.error("Error accessing microphone", error);
             });
 
-    }, []);
+    }, [credentials]);
 
-    return <div>음성 채널 연결 중...</div>;
+    return <div>음성 채널에 연결되었습니다!</div>;
 };
 
 export default VoiceChannel;
