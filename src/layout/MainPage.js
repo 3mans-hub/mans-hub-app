@@ -37,10 +37,10 @@ const MainPage = () => {
         }
 
         if(token) {
-            sessionStorage.setItem('userData', token);
+            sessionStorage.setItem('userData', JSON.stringify(userData));
         }
 
-        const sessionToken = sessionStorage.getItem('userData');
+        const sessionToken = JSON.parse(sessionStorage.getItem('userData'));
         console.log(sessionToken)
 
         if (sessionToken) {
