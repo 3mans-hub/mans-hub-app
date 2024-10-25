@@ -13,33 +13,59 @@
   flex: 1;
   overflow-y: auto;
   background-color: #2E2F2D;
-  height: 80vh;
-
+  padding: 20px;
 }
 
 .message {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 15px;
   background-color: #383A38;
+  border-radius: 12px;
+  padding: 10px;
   color: #FFFFFF;
-  padding: 20px 100px;
-  margin: 10px;
-  border-radius: 20px;
   max-width: 90%;
-  font-size: 1rem;
+}
+
+.userEmoji {
+  margin-right: 10px;
+}
+
+.profileImage {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.messageDetails {
   display: flex;
   flex-direction: column;
+  background-color: #383A38;
+}
+
+.userNameRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.userName {
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: #87CEEB;
 }
 
 .messageTime {
-  font-size: 0.85rem;  /* 시간의 글씨 크기를 줄임 */
-  color: #BBBBBB;  /* 시간에 다른 색상 적용 */
-  margin-bottom: 5px;  /* 내용과 시간 사이에 간격 추가 */
+  font-size: 0.75rem;
+  color: #BBBBBB;
+  margin-left: 10px;
 }
 
 .messageContent {
-  font-size: 1rem;  /* 메시지 내용 글씨 크기 */
-  color: #FFFFFF;  /* 기본 색상 */
+  font-size: 1rem;
+  color: #FFFFFF;
+  margin-top: 5px;
 }
-
 
 .inputArea {
   display: flex;
@@ -69,80 +95,4 @@
 
 .inputField:focus, .sendButton:focus {
   outline: none;
-}
-
-/* 유저 입력 영역 디자인 */
-.userInputArea {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100px;
-  margin-top: 500px;
-  background-color: #2E2F2D;
-}
-
-.userInputArea .inputField {
-  padding: 15px 20px;
-  margin-bottom: 20px;
-  border: none;
-  border-radius: 20px;
-  background-color: #3C3D3A;
-  color: #FFFFFF;
-  font-size: 1.2rem;
-  box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.2);
-  width: 300px;
-  text-align: center;
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.userInputArea .inputField:focus {
-  background-color: #4C4D4A;
-  box-shadow: inset 2px 2px 8px rgba(0, 0, 0, 0.3);
-}
-
-.userInputArea .sendButton {
-  padding: 15px 30px;
-  border: none;
-  background-color: #626361;
-  color: white;
-  border-radius: 20px;
-  cursor: pointer;
-  font-size: 1.2rem;
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
-  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
-  width: 200px;
-  text-align: center;
-}
-
-.userInputArea .sendButton:hover {
-  background-color: #7B7D7A;
-  box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.4);
-}
-
-.inputField:focus, .sendButton:focus {
-  outline: none;
-}
-
-.messageInfo {
-  display: flex;
-  align-items: center;
-}
-
-.userEmoji {
-  width: 40px;
-  height: 40px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 50%;
-  margin-right: 10px;
-  font-size: 24px;
-  background-color: #87CEEB; /* 이모티콘 배경색 */
-  color: #fff; /* 이모티콘의 색상 */
-}
-
-.messageDetails {
-  display: flex;
-  flex-direction: column;
 }
