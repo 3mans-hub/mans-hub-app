@@ -11,7 +11,7 @@ const Modal = ({title, children}) => {
     return (
         <div className={styles.backGround}>
             <div className={styles.modal}>
-                <div>title</div>
+                <div className={styles.title}>{title}</div>
                 {children}
             </div>
         </div>

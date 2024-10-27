@@ -7,6 +7,7 @@ import RightSideBar from "./RightSideBar";
 import ChatInterface from "../components/ChatInterface";
 import FriendsMenu from "../components/FriendsMenu";
 import {useSelector} from "react-redux";
+import {ModalProvider} from "../Context/useModalContext";
 
 
 const MainPage = () => {
@@ -87,14 +88,18 @@ const MainPage = () => {
     };
 
     return (
+
         <div className={styles.mainContainer}>
+            <ModalProvider>
             <SideBar />
             <ServerSideBar />
             <div className={styles.contentArea}>
                 {renderComponent()} {/* 현재 활성화된 컴포넌트를 렌더링 */}
             </div>
             <RightSideBar />
+            </ModalProvider>
         </div>
+
     );
 };
 
