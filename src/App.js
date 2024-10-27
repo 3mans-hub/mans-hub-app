@@ -6,9 +6,9 @@ import {ModalProvider} from "./Context/useModalContext";
 const App = () => {
     return (
         <div>
-            <ModalProvider>
+
                 <RouterProvider router={router}/>
-            </ModalProvider>
+
         </div>
     );
 };
