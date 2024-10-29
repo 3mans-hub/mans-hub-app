@@ -10,8 +10,8 @@ if (clientHostName === "localhost") {
   backendHostName = "http://localhost:" + LOCAL_PORT;
   frontendHostName = "http://localhost:" + LOCAL_FRONT;
 } else {
-  // backendHostName = 'http://43.203.105.27:8888';
-  // frontendHostName = "http://doggle.kr";
+  backendHostName = 'http://3.34.167.124:6969';
+  frontendHostName = "http://app-deploy0918.s3-website.ap-northeast-2.amazonaws.com";
 }
 
 
