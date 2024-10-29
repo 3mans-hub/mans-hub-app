@@ -1,5 +1,6 @@
 import { Client } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
+import {API_BASE_URL} from "../config/host-config";
 
 class SocketService {
     constructor() {
@@ -7,7 +8,7 @@ class SocketService {
     }
 
     connect(callback) {
-        const socket = new SockJS('http://localhost:6969/ws');
+        const socket = new SockJS(`${API_BASE_URL}/ws`);
         this.stompClient = new Client({
             webSocketFactory: () => socket,
             debug: (str) => {

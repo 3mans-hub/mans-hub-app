@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import styles from "./FindPassword.module.scss";
 import SignUpInput from "../../components/SignUpInput";
 import SignUpBtn from "../../components/SignUpBtn";
+import {API_BASE_URL} from "../../config/host-config";
 
 
 const FindPassword = () => {
@@ -34,7 +35,7 @@ const FindPassword = () => {
 
     const emailVerified = async() => {
 
-        const response = await fetch('http://localhost:6969/find_password/email', {
+        const response = await fetch(`${API_BASE_URL}/find_password/email`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

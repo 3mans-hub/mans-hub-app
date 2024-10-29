@@ -15,7 +15,7 @@ if (clientHostName === "localhost") {
 }
 
 
-const API_BASE_URL = backendHostName;
+export const API_BASE_URL = backendHostName;
 const APP_BASE_URL = frontendHostName;
 
 
