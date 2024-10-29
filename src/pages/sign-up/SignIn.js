@@ -3,6 +3,7 @@ import styles from "./SignIn.module.scss";
 import SignUpInput from "../../components/SignUpInput";
 import SignUpBtn from "../../components/SignUpBtn";
 import {useNavigate} from "react-router-dom";
+import {API_BASE_URL} from "../../config/host-config"
 
 const SignIn = () => {
 
@@ -43,7 +44,7 @@ const SignIn = () => {
 
     const loginBtnEventHandler = async () => {
 
-        const response = await fetch('http://localhost:6969/sign_in', {
+        const response = await fetch(`${API_BASE_URL}/sign_in`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

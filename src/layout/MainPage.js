@@ -7,6 +7,7 @@ import RightSideBar from "./RightSideBar";
 import ChatInterface from "../components/ChatInterface";
 import FriendsMenu from "../components/FriendsMenu";
 import {useSelector} from "react-redux";
+import {API_BASE_URL} from "../config/host-config";
 
 
 const MainPage = () => {
@@ -45,7 +46,7 @@ const MainPage = () => {
 
         if (sessionToken) {
             // 4. 토큰 유효성 검사 API 호출
-            const response = await fetch('http://localhost:6969/sign_in/autoLogin', {
+            const response = await fetch(`${API_BASE_URL}/sign_in/autoLogin`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

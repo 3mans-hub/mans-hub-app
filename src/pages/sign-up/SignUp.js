@@ -3,6 +3,7 @@ import SignUpBtn from "../../components/SignUpBtn";
 import SignUpInput from "../../components/SignUpInput";
 import styles from './SignUp.module.scss';
 import {useNavigate} from "react-router-dom";
+import {API_BASE_URL} from '../../config/host-config'
 
 const SignUp = () => {
 
@@ -75,7 +76,7 @@ const SignUp = () => {
     }
 
     const checkEmail = async () => {
-        const response = await fetch('http://localhost:6969/sign_up/email', {
+        const response = await fetch(`${API_BASE_URL}/sign_up/email`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -99,7 +100,7 @@ const SignUp = () => {
     }
 
     const checkVerificationCode = async () => {
-        const response = await fetch('http://localhost:6969/sign_up/check_verificationCode', {
+        const response = await fetch(`${API_BASE_URL}:6969/sign_up/check_verificationCode`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -125,7 +126,7 @@ const SignUp = () => {
     }
 
     const signUpHandler = async () => {
-        const response = await fetch('http://localhost:6969/sign_up', {
+        const response = await fetch(`${API_BASE_URL}:6969/sign_up`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
