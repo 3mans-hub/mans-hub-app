@@ -3,8 +3,14 @@ import styles from './styles/SideBar.module.scss';
 import { PiPlus } from "react-icons/pi";
 import { useDispatch, useSelector } from "react-redux";
 import { groupActions } from "../store/GroupSlice";
+import AddServerModal from "./Modal";
+import {useModal} from "../Context/useModalContext";
+import CreateGroup from "./CreateGroup";
 
 const Sidebar = () => {
+
+    const {openModal} = useModal();
+
     const [active, setActive] = useState(null);
     const dispatch = useDispatch();
     const groups = useSelector(state => state.group.groupList);
@@ -32,7 +38,11 @@ const Sidebar = () => {
 
     // 새 그룹 추가 핸들러
     const addGroupHandler = () => {
-        const newGroup = `그룹${groups.length + 1}`;  // 새로운 그룹 이름
+        const newGroup = `그룹${groups.length + 1}`;// 새로운 그룹 이름
+        openModal(
+            "그룹 생성",
+            <CreateGroup />
+        )
         dispatch(groupActions.addGroup([...groups, newGroup]));  // 기존 그룹에 새 그룹 추가
     };
 
