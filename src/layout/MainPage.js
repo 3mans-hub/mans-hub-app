@@ -6,9 +6,10 @@ import SideBar from "./SideBar";
 import RightSideBar from "./RightSideBar";
 import ChatInterface from "../components/ChatInterface";
 import FriendsMenu from "../components/FriendsMenu";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {API_BASE_URL} from "../config/host-config";
 import {ModalProvider} from "../Context/useModalContext";
+import {groupActions} from "../store/GroupSlice";
 
 
 const MainPage = () => {
@@ -19,13 +20,51 @@ const MainPage = () => {
     // 현재 접속한 그룹
     const currentGroup = useSelector(state => state.group.currentGroup);
 
+    const loginUser = JSON.parse(sessionStorage.getItem("userData"));
+
+    const dispatch = useDispatch();
+
     const navigate = useNavigate();
 
-    useEffect( () => {
+    useEffect( async () => {
 
-        autoLogin();
+        await autoLogin();
+
+        await fetchGroupList();
+
 
     }, []);
+
+
+    const fetchGroupList = async () => {
+        try {
+            const response = await fetch(`${API_BASE_URL}/group`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${loginUser.token}`
+                },
+                body: JSON.stringify(
+                    {
+                        email: loginUser.email
+                    }
+                )
+            });
+
+            const data = await response.json();
+
+            const groupNames = (Array.isArray(data) ? data.map(team => team.name) : []);
+
+            dispatch(groupActions.addGroup(groupNames)); // 가져온 데이터로 업데이트
+
+            console.log("그룹 업데이트!!")
+
+        } catch (error) {
+            console.error("Error fetching group list:", error);
+        }
+    };
+
+
 
     const autoLogin = async () => {
         const userData = JSON.parse(localStorage.getItem("userData")) || {};

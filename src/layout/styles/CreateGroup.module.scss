@@ -1,0 +1,37 @@
+
+.container {
+
+  margin-top: 20px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+
+  .groupInput {
+
+    width: 100%;
+    background: #1E1F22;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    box-sizing: border-box;
+    font-size: 20px;
+    margin-bottom: 15px;
+    border-radius: 18px;
+  }
+
+  .groupInput:focus {
+    outline: none;
+  }
+
+  .creatGroupBtn {
+    background: #3BA55C;
+    border-radius: 18px;
+    border: none;
+    padding: 10px;
+    color: white;
+    font-weight: 700;
+    width: 30%;
+  }
+
+}

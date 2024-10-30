@@ -11,7 +11,7 @@ const initialState = {
     currentGroup: null,
 
     // 더미데이터입니다 (api에서 받아온 객체로 수정)
-    groupList: ['그룹1', '그룹2'],
+    groupList: [],
 
     // UI를 위해 현재 접속중인 그룹 내 채널 (채팅, 음성, 게시판 등등)
     joinChanel: "채팅" // 기본값
