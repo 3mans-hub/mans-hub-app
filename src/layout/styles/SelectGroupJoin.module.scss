@@ -1,0 +1,31 @@
+
+.container {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  .createGroupBtn {
+    width: 100%;
+    border-radius: 18px;
+    border: none;
+    font-size: 20px;
+    color: white;
+    background: #3BA55C;
+    padding: 6px;
+    font-weight: 700;
+  }
+
+  .joinGroupBtn {
+    width: 100%;
+    border-radius: 18px;
+    border: none;
+    font-size: 20px;
+    color: white;
+    background: #3e5b35;
+    padding: 6px;
+    font-weight: 700;
+
+  }
+}
