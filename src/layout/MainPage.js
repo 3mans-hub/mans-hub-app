@@ -15,6 +15,8 @@ import {groupActions} from "../store/GroupSlice";
 const MainPage = () => {
     const [activeComponent, setActiveComponent] = useState('chatInterface');
 
+    const [isLogin, setIsLogin] = useState(false);
+
     // 그룹에 접속 유무
     const joinStatus = useSelector(state => state.group.joinGroupStatus)
     // 현재 접속한 그룹
@@ -26,14 +28,20 @@ const MainPage = () => {
 
     const navigate = useNavigate();
 
-    useEffect( async () => {
+    useEffect(  () => {
 
-        await autoLogin();
+       autoLogin();
 
-        await fetchGroupList();
 
 
     }, []);
+
+    useEffect( () => {
+        if(isLogin) {
+            fetchGroupList();
+        }
+
+    }, [isLogin]);
 
 
     const fetchGroupList = async () => {
@@ -97,6 +105,7 @@ const MainPage = () => {
             if (response.ok) {
                 // 토큰이 유효하면 유저 정보를 불러오고, 로그인 상태 유지
                 console.log('Token is valid');
+                setIsLogin(true);
             } else {
                 // 토큰이 유효하지 않으면 로그아웃 처리
                 console.log('Token is invalid or expired');
