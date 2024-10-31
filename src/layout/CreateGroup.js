@@ -37,9 +37,11 @@ const CreateGroup = () => {
             )
         });
 
+        const data = await response.json();
+
         closeModal();
 
-        dispatch(groupActions.addGroup([...groups, groupName]));  // 기존 그룹에 새 그룹 추가
+        dispatch(groupActions.addGroup({...groups, data}));  // 기존 그룹에 새 그룹 추가
 
     }
 

@@ -25,7 +25,7 @@ const UserStatus = () => {
             {joinStatus && joinChanel === "음성 채널" ?
                 <div className={styles.voiceStatus}>
                     <p className={styles.connectionStatus}>음성 연결됨</p>
-                    <p className={styles.projectInfo}>일반 / {currentGroup}</p>
+                    <p className={styles.projectInfo}>일반 / {currentGroup.name}</p>
                     <div className={styles.voiceControls}>
                         <BsCameraVideoOffFill className={styles.iconControl}/>
                         <MdDesktopAccessDisabled className={styles.iconControl}/>
