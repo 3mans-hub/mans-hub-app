@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import styles from './styles/SideBar.module.scss';
 import { PiPlus } from "react-icons/pi";
 import { useDispatch, useSelector } from "react-redux";
@@ -19,12 +19,12 @@ const Sidebar = () => {
 
 
     // 그룹 클릭 시 현재 접속 그룹 및 접속 상태를 Redux에 저장
-    const groupClickHandler = (index) => {
+    const groupClickHandler = (group) => {
         dispatch(groupActions.joinGroup({
             status: true,
-            group: groups[index]  // 접속한 그룹 이름을 상태에 저장
+            group: group  // 접속한 그룹 이름을 상태에 저장
         }));
-        setActive(index);
+        setActive(group.teamId);
     };
 
     // 로고 클릭 시 그룹 접속 해제
@@ -45,28 +45,34 @@ const Sidebar = () => {
         );
     };
 
+
     return (
         <div className={styles.sidebar}>
             {/* 로고 클릭 시 그룹 접속 해제, 로고 활성화 */}
             <div className={`${styles.mainIcon} ${!joinStatus ? styles.active : ''}`}
                  onClick={logoClickHandler}>
-                로고
+            로고
             </div>
             <div className={styles.line}></div>
 
             {/* 그룹 클릭 시 해당 그룹 활성화 */}
-            {groups.map((group, index) => (
-                <div
-                    key={index}
-                    className={`${styles.icon} ${active === index ? styles.active : ''}`}
-                    onClick={() => groupClickHandler(index)}
-                >
-                    {group}
-                </div>
-            ))}
+
+
+            {
+                Object.values(groups).map((group) => (
+                        <div
+                            key={group.teamId}
+                            className={`${styles.icon} ${active === group.teamId ? styles.active : ''}`}
+                            onClick={() => groupClickHandler(group)}
+                        >
+                            {group.name}
+                        </div>
+                    )
+                )}
+
 
             <div className={styles.addGroup} onClick={addGroupHandler}>
-                <PiPlus />
+                <PiPlus/>
             </div>
 
         </div>

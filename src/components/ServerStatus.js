@@ -29,7 +29,7 @@ const ServerStatus = () => {
 
     return (
         <div>
-            <div className={styles.groupName}>{currentGroup}</div>
+            <div className={styles.groupName}>{currentGroup.name}</div>
 
             {['채팅 채널', '음성 채널', '게시판', '캘린더', '일정 추가'].map(menu => (
                 <div

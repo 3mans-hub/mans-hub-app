@@ -53,9 +53,7 @@ const MainPage = () => {
 
             const data = await response.json();
 
-            const groupNames = (Array.isArray(data) ? data.map(team => team.name) : []);
-
-            dispatch(groupActions.addGroup(groupNames)); // 가져온 데이터로 업데이트
+            dispatch(groupActions.addGroup(data)); // 가져온 데이터로 업데이트
 
             console.log("그룹 업데이트!!")
 
