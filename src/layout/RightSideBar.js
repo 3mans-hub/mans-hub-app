@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import styles from "./styles/ServerSideBar.module.scss";
 import {Outlet, useNavigate} from "react-router-dom";
 
@@ -13,8 +13,12 @@ const RightSideBar = () => {
         sessionStorage.removeItem('userData');
         localStorage.removeItem('userData');
 
+        setView("friends")
+
         navigate("/sign-in");
     }
+
+
 
     return (
         <div className={styles.serverRightSidebar}>
