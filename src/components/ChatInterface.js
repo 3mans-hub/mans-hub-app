@@ -94,10 +94,10 @@ const ChatInterface = () => {
 
     const formatDateForDisplay = (dateString) => {
         const date = new Date(dateString);
-        if (isNaN(date.getTime())) {
-            console.warn("Invalid date format:", dateString);
-            return "Invalid Date";
-        }
+        // if (isNaN(date.getTime())) {
+        //     console.warn("Invalid date format:", dateString);
+        //     return "Invalid Date";
+        // }
 
         // 로컬 시간으로 표시
         const hours = date.getHours();
