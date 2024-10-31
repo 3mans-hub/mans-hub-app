@@ -100,7 +100,7 @@ const SignUp = () => {
     }
 
     const checkVerificationCode = async () => {
-        const response = await fetch(`${API_BASE_URL}:6969/sign_up/check_verificationCode`, {
+        const response = await fetch(`${API_BASE_URL}/sign_up/check_verificationCode`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -126,7 +126,7 @@ const SignUp = () => {
     }
 
     const signUpHandler = async () => {
-        const response = await fetch(`${API_BASE_URL}:6969/sign_up`, {
+        const response = await fetch(`${API_BASE_URL}/sign_up`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
