@@ -4,6 +4,7 @@ import { Stomp } from '@stomp/stompjs';
 import styles from './styles/ChatInterface.module.scss';
 import { CHAT_URL } from '../config/host-config';
 import defaultProfileImage from '../discodeImg.jpeg';
+import { useSelector } from "react-redux";
 
 const ChatInterface = () => {
     const [messages, setMessages] = useState([]);
@@ -11,14 +12,15 @@ const ChatInterface = () => {
     const [stompClient, setStompClient] = useState(null);
     const messagesEndRef = useRef(null);
     const sessionToken = JSON.parse(sessionStorage.getItem('userData'));
-
-    const scrollToBottom = () => {
-        if (messagesEndRef.current) {
-            messagesEndRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
-        }
-    };
+    const currentGroup = useSelector(state => state.group.currentGroup);
+    const teamId = currentGroup?.teamId;
 
     useEffect(() => {
+        if (!teamId) {
+            console.log("teamId를 찾을 수 없습니다.");
+            return;
+        }
+
         const socket = new SockJS(`${CHAT_URL}`);
         const client = Stomp.over(socket);
 
@@ -37,12 +39,14 @@ const ChatInterface = () => {
         });
 
         return () => {
-            if (stompClient) stompClient.disconnect();
+            if (stompClient && stompClient.disconnect) stompClient.disconnect();
         };
-    }, []);
+    }, [teamId]);
 
     useEffect(() => {
-        scrollToBottom();
+        if (messagesEndRef.current) {
+            messagesEndRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
+        }
     }, [messages]);
 
     const handleInput = (event) => {
@@ -59,12 +63,13 @@ const ChatInterface = () => {
     };
 
     const sendMessage = () => {
-        if (input.trim() && stompClient) {
+        if (input.trim() && stompClient && teamId) {
             const messageObject = {
                 userId: sessionToken.userId,
                 name: sessionToken.nickName,
                 email: sessionToken.email,
                 content: input,
+                teamId: teamId,
                 createAt: new Date().toISOString(),
             };
 
@@ -81,34 +86,40 @@ const ChatInterface = () => {
 
     return (
         <div className={styles.chatContainer}>
-            <div className={styles.messagesList}>
-                {messages.map((message, index) => (
-                    <div key={index} className={styles.message}>
-                        <div className={styles.userEmoji}>
-                            <img src={defaultProfileImage} alt="프로필 이미지" className={styles.profileImage}/>
-                        </div>
-                        <div className={styles.messageDetails}>
-                            <div className={styles.userNameRow}>
-                                <div className={styles.userName}>{message.name}</div>
-                                <div className={styles.messageTime}>{formatDateForDisplay(message.createAt)}</div>
+            {teamId ? (
+                <>
+                    <div className={styles.messagesList}>
+                        {messages.map((message, index) => (
+                            <div key={index} className={styles.message}>
+                                <div className={styles.userEmoji}>
+                                    <img src={defaultProfileImage} alt="프로필 이미지" className={styles.profileImage}/>
+                                </div>
+                                <div className={styles.messageDetails}>
+                                    <div className={styles.userNameRow}>
+                                        <div className={styles.userName}>{message.name}</div>
+                                        <div className={styles.messageTime}>{formatDateForDisplay(message.createAt)}</div>
+                                    </div>
+                                    <div className={styles.messageContent}>{message.content}</div>
+                                </div>
                             </div>
-                            <div className={styles.messageContent}>{message.content}</div>
-                        </div>
+                        ))}
+                        <div ref={messagesEndRef} />
                     </div>
-                ))}
-                <div ref={messagesEndRef} />
-            </div>
-            <div className={styles.inputArea}>
-                <input
-                    type="text"
-                    value={input}
-                    onChange={handleInput}
-                    onKeyPress={handleKeyPress}
-                    className={styles.inputField}
-                    placeholder="메시지 입력..."
-                />
-                <button onClick={sendMessage} className={styles.sendButton}>보내기</button>
-            </div>
+                    <div className={styles.inputArea}>
+                        <input
+                            type="text"
+                            value={input}
+                            onChange={handleInput}
+                            onKeyPress={handleKeyPress}
+                            className={styles.inputField}
+                            placeholder="메시지 입력..."
+                        />
+                        <button onClick={sendMessage} className={styles.sendButton}>보내기</button>
+                    </div>
+                </>
+            ) : (
+                <p>팀 정보를 불러오는 중...</p>
+            )}
         </div>
     );
 };
