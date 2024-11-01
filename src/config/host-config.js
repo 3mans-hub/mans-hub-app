@@ -10,7 +10,7 @@ if (clientHostName === "localhost") {
   backendHostName = "http://localhost:" + LOCAL_PORT;
   frontendHostName = "http://localhost:" + LOCAL_FRONT;
 } else {
-  backendHostName = 'http://3.34.167.124:6969';
+  backendHostName = 'http://15.164.119.29:6969';
   frontendHostName = "http://app-deploy0918.s3-website.ap-northeast-2.amazonaws.com";
 }
 
