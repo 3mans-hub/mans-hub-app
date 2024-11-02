@@ -7,16 +7,13 @@
 }
 
 .messagesList {
-  display: flex;
-  flex-direction: column;
   flex-grow: 1;
-  overflow-y: auto;
+  overflow-y: auto; /* 스크롤 활성화 */
   background-color: #2E2F2D;
-  padding: 20px;
-  justify-content: flex-end;
+  width: 100%;
+  padding-left: 60px;
+
 }
-
-
 
 .message {
   display: flex;
