@@ -26,33 +26,29 @@ const ChatInterface = () => {
         const client = Stomp.over(socket);
         client.debug = () => {};
 
-        // connect = 서버에 연결할때 사용하는 메서드
         client.connect({}, () => {
-            // console.log('Connected to WebSocket');
-
-            // 새로운 팀에 연결할 때 채팅방을 초기화하고 메시지 중복 방지
             if (stompClient) {
-                stompClient.disconnect();  // 이전 채팅방 해제
+                stompClient.disconnect();
             }
-
-            // 채팅방을 토픽/퍼블릭으로 진입
+            // 새 메시지가 수신될 때마다 메시지 상태 업데이트
             client.subscribe('/topic/public', (message) => {
                 const receivedMessage = JSON.parse(message.body);
-                // console.log('Received message:', receivedMessage);  // 메시지 수신 확인
-                // 이전메세지 불러오고 파싱된 메세지를 추가
-                setMessages((prevMessages) => [...prevMessages, receivedMessage]);
+
+                // 메시지 수신 시 정렬
+                setMessages((prevMessages) =>
+                    [...prevMessages, receivedMessage]
+                        .sort((a, b) => new Date(a.createAt) - new Date(b.createAt))
+                );
             });
 
-            // 채팅방에 로그인
             setStompClient(client);
-
         }, (error) => {
             console.error("WebSocket 연결 실패: ", error);
-            setTimeout(() => client.connect(), 5000);  // 연결 실패 시 5초 후 재시도
+            setTimeout(() => client.connect(), 5000);
         });
 
+        // 컴포넌트가 언마운트될 때 WebSocket 연결 해제
         return () => {
-            // 팀 변경 시 이전 stompClient 구독을 해제하여 중복 방지
             if (stompClient && stompClient.connected) {
                 stompClient.disconnect();
             }
@@ -64,18 +60,15 @@ const ChatInterface = () => {
         if (teamId && stompClient) {
             stompClient.send('/app/loadMessages', {}, JSON.stringify({ teamId }));
 
-            // 불러온 메시지의 날짜 형식이 올바른지 확인
             stompClient.subscribe('/topic/public', (message) => {
                 const receivedMessages = JSON.parse(message.body);
 
-                // 불러온 메시지마다 createAt 형식을 확인하여 올바르게 변환
-                // 이거 ㅈ같은게 시간 타입때문에 메세지 못 불러와서 오래걸렸다.
-                const formattedMessages = receivedMessages.map((msg) => {
-                    return {
-                        ...msg,
-                        createAt: new Date(msg.createAt).toISOString(),  // ISO 형식으로 변환
-                    };
-                });
+                // 불러온 메시지 정렬 후 저장
+                const formattedMessages = receivedMessages.map((msg) => ({
+                    ...msg,
+                    createAt: new Date(msg.createAt).toISOString(),
+                })).sort((a, b) => new Date(a.createAt) - new Date(b.createAt));
+
                 setMessages(formattedMessages);
             });
         }
@@ -94,18 +87,35 @@ const ChatInterface = () => {
 
     const formatDateForDisplay = (dateString) => {
         const date = new Date(dateString);
-        // if (isNaN(date.getTime())) {
-        //     console.warn("Invalid date format:", dateString);
-        //     return "Invalid Date";
-        // }
+        const today = new Date();
 
-        // 로컬 시간으로 표시
-        const hours = date.getHours();
-        const minutes = String(date.getMinutes()).padStart(2, '0');
-        const period = hours >= 12 ? '오후' : '오전';
-        const hourIn12 = hours % 12 || 12;
+        // 오늘 날짜인지 확인
+        const isToday =
+            date.getFullYear() === today.getFullYear() &&
+            date.getMonth() === today.getMonth() &&
+            date.getDate() === today.getDate();
 
-        return `${period} ${hourIn12}:${minutes}`;
+        if (isToday) {
+            // 시간 포맷 - 오늘일 경우
+            const hours = date.getHours();
+            const period = hours >= 12 ? '오후' : '오전';
+            const hourIn12 = hours % 12 || 12;
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+
+            return `${period} ${hourIn12}:${minutes}`;
+        } else {
+            // 날짜와 시간 포맷 - 오늘이 아닐 경우
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+
+            const hours = date.getHours();
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+            const period = hours >= 12 ? '오후' : '오전';
+            const hourIn12 = hours % 12 || 12;
+
+            return `${year}-${month}-${day} ${period} ${hourIn12}:${minutes}`;
+        }
     };
 
 

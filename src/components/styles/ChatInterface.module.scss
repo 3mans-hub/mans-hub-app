@@ -7,16 +7,13 @@
 }
 
 .messagesList {
-  display: flex;
-  flex-direction: column; /* 아래쪽에서 위쪽으로 쌓이도록 설정 */
   flex-grow: 1;
-  overflow-y: auto;
+  overflow-y: auto; /* 스크롤 활성화 */
   background-color: #2E2F2D;
-  padding: 20px;
-  justify-content: flex-end; /* 초기 메시지가 아래쪽부터 쌓이도록 설정 */
+  width: 100%;
+  padding-left: 60px;
+
 }
-
-
 
 .message {
   display: flex;
