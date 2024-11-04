@@ -80,42 +80,45 @@ const MainPage = () => {
             if(!sessionStorage.getItem("userData")) {
                 navigate("/sign-in");
                 return;
-            }
-        }
-
-        if(token) {
-            sessionStorage.setItem('userData', JSON.stringify(userData));
-        }
-
-        const sessionToken = JSON.parse(sessionStorage.getItem('userData'));
-        console.log(sessionToken)
-
-        if (sessionToken) {
-            // 4. 토큰 유효성 검사 API 호출
-            const response = await fetch(`${API_BASE_URL}/sign_in/autoLogin`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${sessionToken.token}`
-                },
-            });
-
-            console.log(response.text());
-
-            if (response.ok) {
-                // 토큰이 유효하면 유저 정보를 불러오고, 로그인 상태 유지
-                console.log('Token is valid');
-                setIsLogin(true);
             } else {
-                // 토큰이 유효하지 않으면 로그아웃 처리
-                console.log('Token is invalid or expired');
-                sessionStorage.removeItem('userData');
-                localStorage.removeItem('userData'); // 자동 로그인 설정한 경우도 지우기
-                navigate('/sign-in');
+                setIsLogin(true);
             }
         } else {
-            navigate('/sign-in');
+                sessionStorage.setItem('userData', JSON.stringify(userData));
+
+
+            const sessionToken =await JSON.parse(sessionStorage.getItem('userData'));
+            console.log(sessionToken)
+
+            if (sessionToken) {
+                // 4. 토큰 유효성 검사 API 호출
+                const response = await fetch(`${API_BASE_URL}/sign_in/autoLogin`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${sessionToken.token}`
+                    },
+                });
+
+                console.log(response.text());
+
+                if (response.ok) {
+                    // 토큰이 유효하면 유저 정보를 불러오고, 로그인 상태 유지
+                    console.log('Token is valid');
+                    setIsLogin(true);
+                } else {
+                    // 토큰이 유효하지 않으면 로그아웃 처리
+                    console.log('Token is invalid or expired');
+                    sessionStorage.removeItem('userData');
+                    localStorage.removeItem('userData'); // 자동 로그인 설정한 경우도 지우기
+                    navigate('/sign-in');
+                }
+            } else {
+                navigate('/sign-in');
+            }
         }
+
+
     }
 
     useEffect(() => {
