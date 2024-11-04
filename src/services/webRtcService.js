@@ -2,13 +2,14 @@
 // WebRTC 관련 로직, 설정 관리
 
 import socketService from "./socketService";
+import {publicIp} from "../config/host-config";
 
 export const createPeerConnection = (remoteVideoRef) => {
     const peerConnection = new RTCPeerConnection({
         iceServers: [
             { urls: 'stun:stun.l.google.com:19302' },
             {
-                urls: 'turn:localhost:3478',           // 실제 TURN 서버 URL로 변경
+                urls: `turn:${publicIp}:3478`,           // 실제 TURN 서버 URL로 변경
                 username: '1696114800',                // 생성된 username
                 credential: 'generated-credential'     // 생성된 credential
             }

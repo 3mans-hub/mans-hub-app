@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import {API_BASE_URL} from "../config/host-config";
+import { API_BASE_URL } from '../config/host-config';
 
 const useTurnCredentials = () => {
     const [credentials, setCredentials] = useState(null);
+
+
 
     useEffect(() => {
         const fetchTurnCredentials = async () => {
@@ -23,4 +25,5 @@ const useTurnCredentials = () => {
     return credentials;
 };
 
+// 기본 내보내기 추가
 export default useTurnCredentials;
