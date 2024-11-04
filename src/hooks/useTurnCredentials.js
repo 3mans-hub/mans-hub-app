@@ -5,13 +5,14 @@ import { API_BASE_URL } from '../config/host-config';
 const useTurnCredentials = () => {
     const [credentials, setCredentials] = useState(null);
 
-
+    const userData = JSON.parse(localStorage.getItem("userData")) || JSON.parse(sessionStorage.getItem("userData")) || {};
+    console.log(userData.email)
 
     useEffect(() => {
         const fetchTurnCredentials = async () => {
             try {
                 const response = await axios.get(`${API_BASE_URL}/api/getTurnCredentials`, {
-                    params: { username: 'user1' }
+                    params: { username: `${userData.email}` }
                 });
                 setCredentials(response.data);
             } catch (error) {
