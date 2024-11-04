@@ -2,13 +2,17 @@ import { useEffect, useRef } from 'react';
 import socketService from '../services/socketService';
 import { createPeerConnection, getScreenShareStream } from '../services/webrtcService';
 
-// WebRTC 설정 관리
-
 const useWebRTC = (localVideoRef, remoteVideoRef) => {
     const peerConnectionRef = useRef(null);
 
     useEffect(() => {
-        socketService.on('offer', async (offer) => {
+        socketService.connect(() => {
+            console.log("Connected to STOMP server");
+        });
+
+        // STOMP 메시지 수신을 위한 구독 설정
+        socketService.stompClient.subscribe('/topic/offer', async (message) => {
+            const offer = JSON.parse(message.body);
             if (!peerConnectionRef.current) {
                 peerConnectionRef.current = createPeerConnection(remoteVideoRef);
             }
@@ -18,11 +22,13 @@ const useWebRTC = (localVideoRef, remoteVideoRef) => {
             socketService.sendAnswer(answer);
         });
 
-        socketService.on('answer', async (answer) => {
+        socketService.stompClient.subscribe('/topic/answer', async (message) => {
+            const answer = JSON.parse(message.body);
             await peerConnectionRef.current.setRemoteDescription(answer);
         });
 
-        socketService.on('ice-candidate', (candidate) => {
+        socketService.stompClient.subscribe('/topic/ice-candidate', (message) => {
+            const candidate = JSON.parse(message.body);
             peerConnectionRef.current.addIceCandidate(new RTCIceCandidate(candidate));
         });
     }, []);

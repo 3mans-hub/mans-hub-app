@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import socketService from "../services/socketService";
 import useTurnCredentials from '../hooks/useTurnCredentials';
+import {publicIp} from "../config/host-config";
 
 const VoiceChannel = () => {
     const credentials = useTurnCredentials();
@@ -11,7 +12,7 @@ const VoiceChannel = () => {
         const peerConnection = new RTCPeerConnection({
             iceServers: [
                 { urls: 'stun:stun.l.google.com:19302' },
-                { urls: `turn:localhost:3478`, username: credentials.username, credential: credentials.credential }
+                { urls: `turn:${publicIp}:3478`, username: credentials.username, credential: credentials.credential }
             ],
         });
 
@@ -31,26 +32,30 @@ const VoiceChannel = () => {
             document.body.appendChild(audioElement);
         };
 
-        socketService.stompClient.subscribe('/topic/offer', async (offerMessage) => {
-            const offer = JSON.parse(offerMessage.body);
-            await peerConnection.setRemoteDescription(new RTCSessionDescription(offer));
-            const answer = await peerConnection.createAnswer();
-            await peerConnection.setLocalDescription(answer);
-            socketService.stompClient.publish({
-                destination: '/app/answer',
-                body: JSON.stringify(answer),
+        if (socketService.stompClient && socketService.stompClient.connected) {
+            socketService.stompClient.subscribe('/topic/offer', async (offerMessage) => {
+                const offer = JSON.parse(offerMessage.body);
+                await peerConnection.setRemoteDescription(new RTCSessionDescription(offer));
+                const answer = await peerConnection.createAnswer();
+                await peerConnection.setLocalDescription(answer);
+                socketService.stompClient.publish({
+                    destination: '/app/answer',
+                    body: JSON.stringify(answer),
+                });
             });
-        });
 
-        socketService.stompClient.subscribe('/topic/answer', (answerMessage) => {
-            const answer = JSON.parse(answerMessage.body);
-            peerConnection.setRemoteDescription(new RTCSessionDescription(answer));
-        });
+            socketService.stompClient.subscribe('/topic/answer', (answerMessage) => {
+                const answer = JSON.parse(answerMessage.body);
+                peerConnection.setRemoteDescription(new RTCSessionDescription(answer));
+            });
 
-        socketService.stompClient.subscribe('/topic/ice-candidate', (candidateMessage) => {
-            const candidate = JSON.parse(candidateMessage.body);
-            peerConnection.addIceCandidate(new RTCIceCandidate(candidate));
-        });
+            socketService.stompClient.subscribe('/topic/ice-candidate', (candidateMessage) => {
+                const candidate = JSON.parse(candidateMessage.body);
+                peerConnection.addIceCandidate(new RTCIceCandidate(candidate));
+            });
+        } else {
+            console.log("STOMP Client is not connected, retrying...");
+        }
 
         navigator.mediaDevices.getUserMedia({ audio: true })
             .then((stream) => {
